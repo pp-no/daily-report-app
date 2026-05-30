@@ -1,0 +1,26 @@
+spring.application.name=backend
+
+# DB接続
+spring.datasource.url=jdbc:postgresql://localhost:5432/dailyreport
+spring.datasource.username=your_db_username
+spring.datasource.password=your_db_password
+
+# JPA
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# Flyway
+spring.flyway.enabled=true
+
+# JWT（256bit以上のランダムな文字列を設定すること）
+jwt.secret=your-secret-key-must-be-at-least-256bits-long-for-hs256
+jwt.expiration=86400000
+
+# Mail（GmailのSMTP設定）
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=your_gmail_address@gmail.com
+spring.mail.password=your_gmail_app_password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
