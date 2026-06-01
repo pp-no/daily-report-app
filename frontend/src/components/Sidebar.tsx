@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import apiClient from '../api/client';
 
 /** サイドバーのナビゲーション項目の型 */
 interface NavItem {
@@ -33,6 +35,13 @@ const NAV_ITEMS: NavItem[] = [
 const Sidebar = ({ isMobile = false, isOpen = false, onClose }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    apiClient.get<{ name: string }>('/api/users/me').then((res) => {
+      setUserName(res.data.name);
+    });
+  }, []);
 
   /** ログアウト処理：トークンを削除してログインページへ遷移 */
   const handleLogout = () => {
@@ -103,9 +112,9 @@ const Sidebar = ({ isMobile = false, isOpen = false, onClose }: SidebarProps) =>
 
         {/* ユーザーエリア */}
         <div style={S.userArea}>
-          <div style={S.avatar}>U</div>
+          <div style={S.avatar}>{userName.charAt(0).toUpperCase() || 'U'}</div>
           <div>
-            <div style={S.userName}>ユーザー</div>
+            <div style={S.userName}>{userName || '...'}</div>
             <div
               style={{ ...S.userEmail, cursor: 'pointer' }}
               onClick={handleLogout}
