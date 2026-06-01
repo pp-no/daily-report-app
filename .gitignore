@@ -5,6 +5,8 @@
 backend/src/main/resources/application.properties
 # 環境変数ファイル（APIのURLなど）
 frontend/.env
+# Docker Compose 用のシークレット（DB/JWT/Mailパスワードが含まれるため除外）
+.env
 # MCP設定（ローカルマシンの絶対パスが含まれるため除外）
 .mcp.json
 
@@ -58,3 +60,5 @@ Thumbs.db
 pencil-new.pen
 
 CURRICULUM.md
+
+.env
