@@ -1,0 +1,54 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push backend image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker build --platform linux/amd64 \
+            -t $ECR_REGISTRY/dailyreport-backend:latest \
+            ./backend
+          docker push $ECR_REGISTRY/dailyreport-backend:latest
+
+      - name: Build and push frontend image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker build --platform linux/amd64 \
+            -t $ECR_REGISTRY/dailyreport-frontend:latest \
+            ./frontend
+          docker push $ECR_REGISTRY/dailyreport-frontend:latest
+
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service \
+            --cluster dailyreport \
+            --service DailyReport-BackendService7A4224EE-NAKSUgXU6UoV \
+            --force-new-deployment
+          aws ecs update-service \
+            --cluster dailyreport \
+            --service DailyReport-FrontendServiceBC94BA93-n3fh5NXBT1aZ \
+            --force-new-deployment
