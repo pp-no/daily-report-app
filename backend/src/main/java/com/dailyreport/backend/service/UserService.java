@@ -8,6 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * ユーザーサービス
+ *
+ * プロフィールの取得と更新を担当する。
+ * 認証（ログイン・パスワード照合）は AuthService が担当し、ここでは扱わない。
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -15,11 +21,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    /** プロフィール情報を取得する。パスワードは UserResponse に含めないため安全に返せる。 */
     @Transactional(readOnly = true)
     public UserResponse getProfile(String email) {
         return UserResponse.from(findByEmail(email));
     }
 
+    /**
+     * プロフィールを更新する。
+     * @Transactional が有効なため、フィールドをセットするだけで save() 呼び出し後にDBへ反映される。
+     */
     public UserResponse updateProfile(UserRequest request, String email) {
         User user = findByEmail(email);
 
@@ -32,6 +43,7 @@ public class UserService {
 
         user.setName(request.name());
         user.setEmail(request.email());
+        // workStartTime が null の場合は既存の値を保持する（フロントが送ってこない場合も考慮）
         if (request.workStartTime() != null) {
             user.setWorkStartTime(request.workStartTime());
         }
