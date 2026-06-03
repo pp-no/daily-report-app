@@ -2,9 +2,9 @@
 
 | 項目 | 内容 |
 |---|---|
-| 日付 | 2026年5月29日（木） |
+| 日付 | - |
 | プロジェクト | 日報管理アプリ（DailyReport App） |
-| 担当者 | ohki |
+| 担当者 | - |
 | フェーズ | Phase 4：REST API動作確認 / Phase 5：JWT認証 / Phase 6：メール通知・定時実行 |
 
 ---
@@ -97,7 +97,7 @@ Phase 4のREST API動作確認、Phase 5のJWT認証実装、Phase 6のメール
   ```properties
   spring.mail.host=smtp.gmail.com
   spring.mail.port=587
-  spring.mail.username=onryki.work@gmail.com
+  spring.mail.username=your-email@example.com
   spring.mail.password=（Googleアプリパスワード）
   spring.mail.properties.mail.smtp.auth=true
   spring.mail.properties.mail.smtp.starttls.enable=true
@@ -109,7 +109,7 @@ Phase 4のREST API動作確認、Phase 5のJWT認証実装、Phase 6のメール
   - 前日の日報の `summary` が入力済みの場合のみメール送信
 - `BackendApplication.java` に `@EnableScheduling` を追加
 - デバッグ用に `@Slf4j` ログを追加して対象ユーザー数・送信先をコンソール出力
-- 動作確認：`onryki.work@gmail.com` へのメール受信を確認
+- 動作確認：`your-email@example.com` へのメール受信を確認
 
 **成果物：**
 - `backend/src/main/java/com/dailyreport/backend/service/MailService.java`
