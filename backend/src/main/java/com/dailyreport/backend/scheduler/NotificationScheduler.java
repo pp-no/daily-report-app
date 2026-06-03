@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Slf4j
@@ -25,8 +26,9 @@ public class NotificationScheduler {
     // 毎分チェックして、業務開始30分前のユーザーに通知
     @Scheduled(cron = "0 * * * * *")
     public void sendMorningNotification() {
-        LocalTime now = LocalTime.now().withSecond(0).withNano(0);
-        LocalDate yesterday = LocalDate.now().minusDays(1);
+        ZoneId jst = ZoneId.of("Asia/Tokyo");
+        LocalTime now = LocalTime.now(jst).withSecond(0).withNano(0);
+        LocalDate yesterday = LocalDate.now(jst).minusDays(1);
 
         log.info("スケジューラー実行: now={}, target={}", now, now.plusMinutes(30));
 
