@@ -82,7 +82,6 @@ daily-report-app/
 │       ├── pages/                  # 各画面コンポーネント
 │       └── types/                  # TypeScript型定義
 ├── docker-compose.yml              # ローカル開発用（PostgreSQLのみ）
-├── CURRICULUM.md                   # 学習カリキュラム
 └── README.md
 ```
 
@@ -234,7 +233,7 @@ Amazon SES でメール送信
 | Phase 5 | JWT認証・Spring Security | ✅ 完了 |
 | Phase 6 | メール通知・@Scheduled定時実行 | ✅ 完了 |
 | Phase 7 | Reactフロントエンド開発（レスポンシブ対応） | ✅ 完了 |
-| Phase 8 | テスト（JUnit・Mockito・MockMvc） | 🔜 未着手 |
+| Phase 8 | テスト（JUnit・Mockito・MockMvc） | ✅ 完了 |
 | Phase 9 | Docker化（マルチステージビルド） | ✅ 完了 |
 | Phase 10 | AWSデプロイ（ECS・RDS・SES・GitHub Actions） | ✅ 完了 |
 
