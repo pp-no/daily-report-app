@@ -146,7 +146,6 @@ export class InfraStack extends cdk.Stack {
         SPRING_MAIL_PORT: '587',
         SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: 'true',
         SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: 'true',
-        MAIL_FROM: 'onryki.work@gmail.com',
       },
       secrets: {
         // Secrets Manager から実行時に取得（平文でタスク定義に残らない）
@@ -155,6 +154,7 @@ export class InfraStack extends cdk.Stack {
         JWT_SECRET: ecs.Secret.fromSecretsManager(appSecret, 'JWT_SECRET'),
         SPRING_MAIL_USERNAME: ecs.Secret.fromSecretsManager(appSecret, 'MAIL_USERNAME'),
         SPRING_MAIL_PASSWORD: ecs.Secret.fromSecretsManager(appSecret, 'MAIL_PASSWORD'),
+        MAIL_FROM: ecs.Secret.fromSecretsManager(appSecret, 'MAIL_FROM'),
       },
       logging: ecs.LogDrivers.awsLogs({
         streamPrefix: 'backend',
