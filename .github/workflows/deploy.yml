@@ -44,11 +44,7 @@ jobs:
 
       - name: Deploy to ECS
         run: |
-          aws ecs update-service \
-            --cluster dailyreport \
-            --service DailyReport-BackendService7A4224EE-NAKSUgXU6UoV \
-            --force-new-deployment
-          aws ecs update-service \
-            --cluster dailyreport \
-            --service DailyReport-FrontendServiceBC94BA93-n3fh5NXBT1aZ \
-            --force-new-deployment
+          BACKEND_SERVICE=$(aws ecs list-services --cluster dailyreport --query "serviceArns[?contains(@, 'BackendService')]" --output text | awk -F'/' '{print $NF}')
+          FRONTEND_SERVICE=$(aws ecs list-services --cluster dailyreport --query "serviceArns[?contains(@, 'FrontendService')]" --output text | awk -F'/' '{print $NF}')
+          aws ecs update-service --cluster dailyreport --service $BACKEND_SERVICE --force-new-deployment
+          aws ecs update-service --cluster dailyreport --service $FRONTEND_SERVICE --force-new-deployment
