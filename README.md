@@ -28,7 +28,7 @@
 | データベース | PostgreSQL 17 |
 | ORM | Spring Data JPA / Flyway |
 | 認証 | Spring Security / JWT |
-| メール送信 | Spring Mail（Gmail SMTP） |
+| メール送信 | Spring Mail（Amazon SES） |
 | 定時実行 | @Scheduled |
 | コンテナ | Docker / Docker Compose |
 | CI/CD | GitHub Actions |
@@ -56,6 +56,7 @@
 ### 通知機能
 - 業務開始時刻の30分前に前日の日報の**まとめ欄**をメール送信
 - メール通知のON/OFF設定
+- プロフィール画面から今すぐ送信（任意のタイミングで動作確認可能）
 
 ---
 
@@ -115,6 +116,7 @@ daily-report-app/
 | GET | /api/reports/public | 公開日報一覧 | 必要 |
 | GET | /api/users/me | プロフィール取得 | 必要 |
 | PUT | /api/users/me | プロフィール更新 | 必要 |
+| POST | /api/notifications/test | 通知メールを今すぐ送信 | 必要 |
 
 ---
 
@@ -201,17 +203,23 @@ http://localhost:5173
 
 ## 通知メールの仕組み
 
+### 自動通知（スケジューラー）
+
 ```
-毎分 @Scheduled が実行される
+毎分 @Scheduled が実行される（JST基準）
         ↓
 「現在時刻 + 30分 = 業務開始時刻」のユーザーを検索
         ↓
 前日の日報のまとめ欄が入力済みであれば
         ↓
-Gmail SMTP でメール送信
+Amazon SES でメール送信
 ```
 
 例：業務開始時刻を `09:00` に設定している場合、毎朝 `08:30` にメールが届く。
+
+### 即時送信
+
+プロフィール画面の「今すぐ送信」ボタンから任意のタイミングで送信できる。昨日の日報が存在しない場合はダミーテキストで送信される。
 
 ---
 
@@ -227,12 +235,12 @@ Gmail SMTP でメール送信
 | Phase 6 | メール通知・@Scheduled定時実行 | ✅ 完了 |
 | Phase 7 | Reactフロントエンド開発（レスポンシブ対応） | ✅ 完了 |
 | Phase 8 | テスト（JUnit・Mockito・MockMvc） | 🔜 未着手 |
-| Phase 9 | Docker化（マルチステージビルド） | 🔜 未着手 |
-| Phase 10 | AWSデプロイ（ECS・RDS・SES・GitHub Actions） | 🔜 未着手 |
+| Phase 9 | Docker化（マルチステージビルド） | ✅ 完了 |
+| Phase 10 | AWSデプロイ（ECS・RDS・SES・GitHub Actions） | ✅ 完了 |
 
 ---
 
 ## 注意事項
 
-- `application.properties` にはDBパスワード・JWTシークレット・Gmailアプリパスワードが含まれるため **Gitにコミットしない**（`.gitignore` で除外済み）
-- Gmailのアプリパスワードは [Googleアカウント設定](https://myaccount.google.com/apppasswords) から発行する
+- `application.properties` にはDBパスワード・JWTシークレット等が含まれるため **Gitにコミットしない**（`.gitignore` で除外済み）
+- 本番環境の機密情報（JWT_SECRET・MAIL_USERNAME・MAIL_PASSWORD）は AWS Secrets Manager（`dailyreport/app`）で管理する

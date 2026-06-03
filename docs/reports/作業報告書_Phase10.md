@@ -261,20 +261,120 @@ Secrets Manager
 
 ---
 
+## ハマったポイントと解決策（追加）
+
+### ⑤ cdk destroy 後の再デプロイ時に ECR イメージが消える
+
+**問題：**
+`cdk destroy` で全リソースを削除後、`cdk deploy` で再構築したところECSタスクが起動しなかった。
+
+```
+CannotPullContainerError: failed to resolve ref ...dailyreport-backend:latest: not found
+```
+
+**原因：**
+`cdk destroy` 時に ECR リポジトリも削除されるため、イメージも消える。`cdk deploy` でECRリポジトリは再作成されるが、イメージは空の状態。
+
+**解決策：**
+`cdk deploy` 後に毎回 ECR へのイメージ push が必要。`infra/README.md` にステップとして明記した。
+
+---
+
+### ⑥ GitHub Actions で ECSサービス名のハードコードが問題に
+
+**問題：**
+`cdk destroy` → `cdk deploy` のたびにECSサービス名末尾のランダム文字列が変わる。`deploy.yml` にハードコードしていたため、再デプロイ後にCI/CDが失敗した。
+
+```
+ServiceNotFoundException: ... DailyReport-BackendService7A4224EE-NAKSUgXU6UoV
+```
+
+**解決策：**
+サービス名をAWS CLIで動的に取得するよう変更した。
+
+```bash
+BACKEND_SERVICE=$(aws ecs list-services --cluster dailyreport \
+  --query "serviceArns[?contains(@, 'BackendService')]" \
+  --output text | awk -F'/' '{print $NF}')
+```
+
+合わせて `github-actions-deployer` IAMユーザーに `ecs:ListServices` 権限を追加した。
+
+---
+
+### ⑦ スケジューラーのタイムゾーン問題
+
+**問題：**
+ECSコンテナはUTCで動作するため、`LocalTime.now()` がUTC時刻を返す。ユーザーがJSTで設定した業務開始時刻と一致せずメール通知が届かなかった。
+
+**解決策：**
+`LocalTime.now()` と `LocalDate.now()` にJSTタイムゾーンを指定した。
+
+```java
+ZoneId jst = ZoneId.of("Asia/Tokyo");
+LocalTime now = LocalTime.now(jst).withSecond(0).withNano(0);
+LocalDate yesterday = LocalDate.now(jst).minusDays(1);
+```
+
+---
+
+### ⑧ SES メール送信が FROM アドレス未設定で拒否される
+
+**問題：**
+スケジューラーおよびテスト送信でメールが届かず、CloudWatch Logs に以下のエラーが記録されていた。
+
+```
+554 Message rejected: Email address is not verified.
+The following identities failed the check in region AP-NORTHEAST-1:
+root@ip-10-0-1-25.ap-northeast-1.compute.internal
+```
+
+**原因：**
+`MailService` で `message.setFrom()` を呼んでいなかったため、FROM アドレスがデフォルトのコンテナホスト名（`root@ip-10-0-1-25...`）になっていた。SES はこのアドレスを未検証として拒否した。
+
+**解決策：**
+FROM アドレスに TO（受信者）と同じユーザーのメールアドレスを設定した。このアプリは自分宛に通知を送る仕組みのため、TO = FROM で成立する。
+
+```java
+message.setFrom(to);  // 登録メールアドレスをFROMにも使用
+message.setTo(to);
+```
+
+---
+
+### ⑨ SES から送信したメールが Gmail の迷惑メールに振り分けられる
+
+**問題：**
+FROM アドレス修正後にメールは届くようになったが、受信トレイではなく迷惑メールフォルダに入っていた。
+
+**原因：**
+SES サンドボックスモードで送信したメールは送信ドメインの信頼性がまだ低く、Gmail にスパム判定される。
+
+**解決策：**
+迷惑メールフォルダで「迷惑メールではない」をクリックすることで Gmail が学習し、以降は受信トレイに届くようになった。
+
+---
+
+### ⑩ 即時送信機能の追加
+
+**背景：**
+スケジューラーによる通知は「業務開始30分前」にしか動作しないため、動作確認に時間がかかった。
+
+**対応：**
+プロフィール画面に「今すぐ送信」ボタンを追加し、任意のタイミングで通知メールを送信できる機能を実装した。
+
+- バックエンド：`POST /api/notifications/test` エンドポイントを新規作成
+- フロントエンド：プロフィール画面の通知設定カードにボタンを追加
+- 昨日の日報が存在しない場合はダミーテキストで送信
+
+---
+
 ## 確認事項・懸念点
 
 | 項目 | 内容 |
 |---|---|
-| メール機能（SES） | `MAIL_USERNAME` / `MAIL_PASSWORD` が未設定のためパスワードリセットメールは未対応。別途 AWS SES のセットアップが必要 |
-| HTTPS対応 | 現在は HTTP のみ。本番運用にはACM証明書取得とALBのHTTPS設定が必要 |
-| コスト | RDS t3.micro・ECS Fargate（最小構成）で稼働中。本番運用前にコスト試算が必要 |
-
----
-
-## 次回作業予定
-
-- **SESセットアップ**（メール送信機能の有効化）
-- **HTTPS対応**（ACM + ALB）
+| HTTPS対応 | 現在は HTTP のみ。本番運用にはACM証明書取得とALBのHTTPS設定が必要（独自ドメイン要） |
+| コスト | RDS t3.micro・ECS Fargate（最小構成）で稼働中。学習用途のため使用時のみデプロイする運用 |
 
 ---
 
@@ -287,4 +387,6 @@ Secrets Manager
 | デプロイトラブルシュート（4つのハマりポイント解決） | 約120分 |
 | Secrets Manager更新・動作確認 | 約20分 |
 | GitHub Actions CI/CD構築 | 約20分 |
-| **合計** | **約250分** |
+| SESセットアップ・メール通知動作確認 | 約30分 |
+| CI/CDエラー対応・タイムゾーン修正 | 約30分 |
+| **合計** | **約310分** |
