@@ -78,7 +78,7 @@ const ProfilePage = () => {
     setTestMailSending(true);
     setTestMailMessage('');
     try {
-      await apiClient.post('/api/notifications/test');
+      await apiClient.post('/api/notifications/send');
       setTestMailMessage('送信しました。受信ボックスを確認してください。');
     } catch {
       setTestMailMessage('送信に失敗しました。');

@@ -24,7 +24,7 @@ public class NotificationController {
     private final DailyReportRepository reportRepository;
     private final MailService mailService;
 
-    @PostMapping("/test")
+    @PostMapping("/send")
     public ResponseEntity<String> sendTestNotification(
             @AuthenticationPrincipal UserDetails userDetails) {
 

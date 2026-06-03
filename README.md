@@ -116,7 +116,7 @@ daily-report-app/
 | GET | /api/reports/public | 公開日報一覧 | 必要 |
 | GET | /api/users/me | プロフィール取得 | 必要 |
 | PUT | /api/users/me | プロフィール更新 | 必要 |
-| POST | /api/notifications/test | 通知メールを今すぐ送信 | 必要 |
+| POST | /api/notifications/send | 通知メールを今すぐ送信 | 必要 |
 
 ---
 
