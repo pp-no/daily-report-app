@@ -1,7 +1,6 @@
 package com.dailyreport.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -14,12 +13,9 @@ public class MailService {
 
     private final JavaMailSender mailSender;
 
-    @Value("${mail.from}")
-    private String fromAddress;
-
     public void sendDailyReportSummary(String to, String userName, LocalDate reportDate, String summary) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromAddress);
+        message.setFrom(to);
         message.setTo(to);
         message.setSubject("【日報サマリー】昨日の振り返り - " + reportDate);
         message.setText(

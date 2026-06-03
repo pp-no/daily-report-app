@@ -154,7 +154,6 @@ export class InfraStack extends cdk.Stack {
         JWT_SECRET: ecs.Secret.fromSecretsManager(appSecret, 'JWT_SECRET'),
         SPRING_MAIL_USERNAME: ecs.Secret.fromSecretsManager(appSecret, 'MAIL_USERNAME'),
         SPRING_MAIL_PASSWORD: ecs.Secret.fromSecretsManager(appSecret, 'MAIL_PASSWORD'),
-        MAIL_FROM: ecs.Secret.fromSecretsManager(appSecret, 'MAIL_FROM'),
       },
       logging: ecs.LogDrivers.awsLogs({
         streamPrefix: 'backend',
