@@ -79,7 +79,7 @@ const ProfilePage = () => {
     setTestMailMessage('');
     try {
       await apiClient.post('/api/notifications/test');
-      setTestMailMessage('テストメールを送信しました。受信ボックスを確認してください。');
+      setTestMailMessage('送信しました。受信ボックスを確認してください。');
     } catch {
       setTestMailMessage('送信に失敗しました。');
     } finally {
@@ -177,7 +177,7 @@ const ProfilePage = () => {
               </button>
               <hr style={{ border: 'none', borderTop: '1px solid #e2e8f0', margin: '16px 0' }} />
               <p style={S.testMailDesc}>
-                昨日の日報サマリーを今すぐ自分宛に送信してテストできます。
+                昨日の日報サマリーを今すぐ自分宛に送信します。
               </p>
               {testMailMessage && <p style={S.message}>{testMailMessage}</p>}
               <button
@@ -185,7 +185,7 @@ const ProfilePage = () => {
                 onClick={handleTestMail}
                 disabled={testMailSending}
               >
-                {testMailSending ? '送信中...' : 'テストメールを送信'}
+                {testMailSending ? '送信中...' : '今すぐ送信'}
               </button>
             </div>
 
