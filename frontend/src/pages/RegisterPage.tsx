@@ -19,7 +19,7 @@ const RegisterPage = () => {
    * 登録フォーム送信
    * 成功時はJWTトークンをlocalStorageに保存して日報一覧へ遷移
    */
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setLoading(true);

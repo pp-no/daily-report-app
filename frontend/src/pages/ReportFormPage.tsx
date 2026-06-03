@@ -49,7 +49,7 @@ const ReportFormPage = () => {
   /**
    * フォーム送信：作成または更新を実行して一覧へ遷移
    */
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setSaving(true);
