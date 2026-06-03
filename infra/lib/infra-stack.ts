@@ -146,6 +146,7 @@ export class InfraStack extends cdk.Stack {
         SPRING_MAIL_PORT: '587',
         SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: 'true',
         SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: 'true',
+        MAIL_FROM: 'onryki.work@gmail.com',
       },
       secrets: {
         // Secrets Manager から実行時に取得（平文でタスク定義に残らない）

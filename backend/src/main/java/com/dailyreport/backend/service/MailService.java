@@ -14,7 +14,7 @@ public class MailService {
 
     private final JavaMailSender mailSender;
 
-    @Value("${spring.mail.username}")
+    @Value("${mail.from:onryki.work@gmail.com}")
     private String fromAddress;
 
     public void sendDailyReportSummary(String to, String userName, LocalDate reportDate, String summary) {
