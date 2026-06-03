@@ -27,6 +27,8 @@ const ProfilePage = () => {
 
   const [profileMessage, setProfileMessage] = useState('');
   const [notifMessage, setNotifMessage] = useState('');
+  const [testMailMessage, setTestMailMessage] = useState('');
+  const [testMailSending, setTestMailSending] = useState(false);
 
   // 画面表示時にプロフィール情報を取得する
   useEffect(() => {
@@ -68,6 +70,21 @@ const ProfilePage = () => {
       setTimeout(() => setNotifMessage(''), 3000);
     } catch {
       setNotifMessage('保存に失敗しました');
+    }
+  };
+
+  // テストメールを即時送信する
+  const handleTestMail = async () => {
+    setTestMailSending(true);
+    setTestMailMessage('');
+    try {
+      await apiClient.post('/api/notifications/test');
+      setTestMailMessage('テストメールを送信しました。受信ボックスを確認してください。');
+    } catch {
+      setTestMailMessage('送信に失敗しました。');
+    } finally {
+      setTestMailSending(false);
+      setTimeout(() => setTestMailMessage(''), 5000);
     }
   };
 
@@ -157,6 +174,18 @@ const ProfilePage = () => {
               {notifMessage && <p style={S.message}>{notifMessage}</p>}
               <button style={S.primaryButton} onClick={handleNotifSave}>
                 通知設定を保存
+              </button>
+              <hr style={{ border: 'none', borderTop: '1px solid #e2e8f0', margin: '16px 0' }} />
+              <p style={S.testMailDesc}>
+                昨日の日報サマリーを今すぐ自分宛に送信してテストできます。
+              </p>
+              {testMailMessage && <p style={S.message}>{testMailMessage}</p>}
+              <button
+                style={S.secondaryButton}
+                onClick={handleTestMail}
+                disabled={testMailSending}
+              >
+                {testMailSending ? '送信中...' : 'テストメールを送信'}
               </button>
             </div>
 
@@ -249,6 +278,23 @@ const S = {
     color: '#3b82f6',
     marginBottom: 8,
     marginTop: 0,
+  },
+  testMailDesc: {
+    fontSize: 12,
+    color: '#64748b',
+    marginBottom: 10,
+    marginTop: 0,
+  },
+  secondaryButton: {
+    background: 'transparent',
+    color: '#3b82f6',
+    border: '1px solid #3b82f6',
+    borderRadius: 6,
+    padding: '9px 18px',
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: 'pointer',
+    width: '100%',
   },
 };
 
