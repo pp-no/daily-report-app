@@ -41,7 +41,16 @@ Spring Bootバックエンドの開発環境を構築し、DB設計・エンテ�
 **実施内容：**
 - Spring Initializr（start.spring.io）でプロジェクト生成
   - Gradle / Java 21 / Spring Boot 3.5.x
-  - Dependencies: Web, JPA, Security, Mail, PostgreSQL, Lombok, Validation, DevTools, Flyway
+  - Dependencies:
+    - **Spring Web**: RESTful APIの構築に必要なWebフレームワーク（@RestController等）
+    - **Spring Data JPA**: JPAを使ったDB操作を簡潔に書けるようにするライブラリ（Repository自動生成）
+    - **Spring Security**: 認証・認可の仕組みを提供するセキュリティフレームワーク
+    - **Java Mail Sender**: メール送信機能を提供するライブラリ（Amazon SES等のSMTPと接続）
+    - **PostgreSQL Driver**: JavaからPostgreSQLに接続するためのJDBCドライバー
+    - **Lombok**: @Getter/@Setter等のアノテーションでボイラープレートコードを自動生成
+    - **Validation**: @NotBlank/@Email等のアノテーションでバリデーションを宣言的に記述
+    - **Spring Boot DevTools**: コード変更時に自動再起動するなど開発時の利便性を向上
+    - **Flyway Migration**: SQLファイルを使ったDBスキーマのバージョン管理ツール
 - `backend/` をプロジェクトルートに配置
 - build.gradleのバージョンを `3.5.15-SNAPSHOT` → `3.4.5`（安定版）に修正
 - Snapshotリポジトリを削除
