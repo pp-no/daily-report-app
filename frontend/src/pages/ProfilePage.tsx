@@ -57,6 +57,45 @@ const ProfilePage = () => {
     }
   };
 
+  // パスワード変更フォームの状態
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  // パスワードを変更する
+  const handlePasswordChange = async () => {
+    setPasswordMessage('');
+    setPasswordError('');
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('新しいパスワードと確認用パスワードが一致しません');
+      return;
+    }
+    if (newPassword.length < 8) {
+      setPasswordError('パスワードは8文字以上で入力してください');
+      return;
+    }
+
+    try {
+      await apiClient.put('/api/users/me/password', {
+        currentPassword,
+        newPassword,
+        confirmPassword,
+      });
+      setPasswordMessage('パスワードを変更しました');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+      setTimeout(() => setPasswordMessage(''), 3000);
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { message?: string } } })?.response?.data?.message;
+      setPasswordError(msg ?? 'パスワードの変更に失敗しました');
+    }
+  };
+
   // 通知設定（業務開始時刻・通知ON/OFF）を更新する
   const handleNotifSave = async () => {
     try {
@@ -114,7 +153,7 @@ const ProfilePage = () => {
         </div>
 
         <div style={gridStyle}>
-          {/* 左カラム：プロフィール情報 */}
+          {/* 左カラム：プロフィール情報 + パスワード変更 */}
           <div>
             <div style={S.card}>
               <h2 style={S.cardTitle}>プロフィール情報</h2>
@@ -142,6 +181,45 @@ const ProfilePage = () => {
               {profileMessage && <p style={S.message}>{profileMessage}</p>}
               <button style={S.primaryButton} onClick={handleProfileSave}>
                 プロフィールを更新
+              </button>
+            </div>
+
+            <div style={{ ...S.card, marginTop: 16 }}>
+              <h2 style={S.cardTitle}>パスワード変更</h2>
+              <div style={S.field}>
+                <label style={S.label}>現在のパスワード</label>
+                <input
+                  type="password"
+                  style={S.input}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="現在のパスワード"
+                />
+              </div>
+              <div style={S.field}>
+                <label style={S.label}>新しいパスワード</label>
+                <input
+                  type="password"
+                  style={S.input}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="8文字以上"
+                />
+              </div>
+              <div style={S.field}>
+                <label style={S.label}>新しいパスワード（確認）</label>
+                <input
+                  type="password"
+                  style={S.input}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="もう一度入力"
+                />
+              </div>
+              {passwordError && <p style={S.errorMessage}>{passwordError}</p>}
+              {passwordMessage && <p style={S.message}>{passwordMessage}</p>}
+              <button style={S.primaryButton} onClick={handlePasswordChange}>
+                パスワードを変更
               </button>
             </div>
           </div>
@@ -276,6 +354,12 @@ const S = {
   message: {
     fontSize: 12,
     color: '#3b82f6',
+    marginBottom: 8,
+    marginTop: 0,
+  },
+  errorMessage: {
+    fontSize: 12,
+    color: '#ef4444',
     marginBottom: 8,
     marginTop: 0,
   },

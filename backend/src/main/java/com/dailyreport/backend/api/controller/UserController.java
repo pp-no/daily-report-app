@@ -1,5 +1,6 @@
 package com.dailyreport.backend.api.controller;
 
+import com.dailyreport.backend.api.dto.ChangePasswordRequest;
 import com.dailyreport.backend.api.dto.UserRequest;
 import com.dailyreport.backend.api.dto.UserResponse;
 import com.dailyreport.backend.service.UserService;
@@ -43,5 +44,18 @@ public class UserController {
             @RequestBody @Valid UserRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(userService.updateProfile(request, userDetails.getUsername()));
+    }
+
+    /**
+     * PUT /api/users/me/password（パスワード変更）
+     * 現在のパスワードを照合してから新しいパスワードに変更する。
+     * 成功時は 204 No Content を返す（レスポンスボディなし）。
+     */
+    @PutMapping("/me/password")
+    public ResponseEntity<Void> changePassword(
+            @RequestBody @Valid ChangePasswordRequest request,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        userService.changePassword(request, userDetails.getUsername());
+        return ResponseEntity.noContent().build();
     }
 }
