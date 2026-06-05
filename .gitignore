@@ -55,6 +55,14 @@ frontend/node_modules/.cache/
 Thumbs.db
 
 # ===========================
+# Claude Code
+# ===========================
+# 個人の作業ログ（各自の端末で蓄積するもの）
+.claude/prompt-log.md
+# ローカル設定（MCP有効/無効など端末固有の設定）
+.claude/settings.local.json
+
+# ===========================
 # その他
 # ===========================
 pencil-new.pen
