@@ -17,6 +17,8 @@ services:
 
   backend:
     build: ./backend
+    ports:
+      - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/dailyreport
       SPRING_DATASOURCE_USERNAME: ${DB_USER:-user}
