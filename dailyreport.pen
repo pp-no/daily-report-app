@@ -688,108 +688,143 @@
                         },
                         "blur": 4
                       },
-                      "gap": 16,
+                      "layout": "vertical",
+                      "gap": 10,
                       "padding": [
                         16,
                         20
                       ],
-                      "alignItems": "center",
                       "children": [
                         {
                           "type": "frame",
-                          "id": "FrKdp",
+                          "id": "gtito",
+                          "name": "Row",
                           "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 4,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
                           "children": [
                             {
-                              "type": "text",
-                              "id": "dXo0E",
-                              "fill": "#94A3B8",
-                              "content": "2025年5月27日（火）",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
+                              "type": "frame",
+                              "id": "almyo",
+                              "name": "Left",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "dXo0E",
+                                  "fill": "#94A3B8",
+                                  "content": "2025年5月27日（火）",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "W66xi",
+                                  "fill": "#0F172A",
+                                  "content": "APIエンドポイントの実装",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "rLuB8",
+                                  "height": 26,
+                                  "fill": "#10B9811A",
+                                  "cornerRadius": 100,
+                                  "padding": [
+                                    0,
+                                    10
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "unKNn",
+                                      "fill": "#10B981",
+                                      "content": "公開",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "600"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
-                              "type": "text",
-                              "id": "W66xi",
-                              "fill": "#0F172A",
-                              "content": "APIエンドポイントの実装",
-                              "fontFamily": "Inter",
-                              "fontSize": 15,
-                              "fontWeight": "600"
+                              "type": "frame",
+                              "id": "Sln52",
+                              "name": "Right",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "y8s9Fc",
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 5,
+                                  "stroke": "#3B82F6",
+                                  "strokeWidth": 1,
+                                  "padding": [
+                                    0,
+                                    14
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "W279w",
+                                      "fill": "#374151",
+                                      "content": "編集",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "jMV6q",
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 5,
+                                  "stroke": "#EF4444",
+                                  "strokeWidth": 1,
+                                  "padding": [
+                                    0,
+                                    14
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "vw8jK",
+                                      "fill": "#EF4444",
+                                      "content": "削除",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         },
                         {
-                          "type": "frame",
-                          "id": "rLuB8",
-                          "height": 26,
-                          "fill": "#10B9811A",
-                          "cornerRadius": 6,
-                          "padding": [
-                            0,
-                            10
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "unKNn",
-                              "fill": "#10B981",
-                              "content": "公開",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "600"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "y8s9Fc",
-                          "height": 36,
-                          "fill": "#F1F5F9",
-                          "cornerRadius": 8,
-                          "padding": [
-                            0,
-                            14
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "W279w",
-                              "fill": "#374151",
-                              "content": "編集",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "jMV6q",
-                          "height": 36,
-                          "fill": "#FEF2F2",
-                          "cornerRadius": 8,
-                          "padding": [
-                            0,
-                            14
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "vw8jK",
-                              "fill": "#EF4444",
-                              "content": "削除",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
+                          "type": "text",
+                          "id": "y6sHa",
+                          "name": "Content",
+                          "fill": "#64748B",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "REST APIの各エンドポイント実装と接続テストを実施。認証フローの動作確認を完了しました。",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -809,108 +844,143 @@
                         },
                         "blur": 4
                       },
-                      "gap": 16,
+                      "layout": "vertical",
+                      "gap": 10,
                       "padding": [
                         16,
                         20
                       ],
-                      "alignItems": "center",
                       "children": [
                         {
                           "type": "frame",
-                          "id": "GH2kY",
+                          "id": "tJnNw",
+                          "name": "Row",
                           "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 4,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
                           "children": [
                             {
-                              "type": "text",
-                              "id": "KEXXc",
-                              "fill": "#94A3B8",
-                              "content": "2025年5月26日（月）",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
+                              "type": "frame",
+                              "id": "GpyuI",
+                              "name": "Left",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "KEXXc",
+                                  "fill": "#94A3B8",
+                                  "content": "2025年5月26日（月）",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "r8Osb",
+                                  "fill": "#0F172A",
+                                  "content": "データベース設計の見直し",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "vzUai",
+                                  "height": 26,
+                                  "fill": "#94A3B81A",
+                                  "cornerRadius": 100,
+                                  "padding": [
+                                    0,
+                                    10
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "T4Xap",
+                                      "fill": "#94A3B8",
+                                      "content": "非公開",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "600"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
-                              "type": "text",
-                              "id": "r8Osb",
-                              "fill": "#0F172A",
-                              "content": "データベース設計の見直し",
-                              "fontFamily": "Inter",
-                              "fontSize": 15,
-                              "fontWeight": "600"
+                              "type": "frame",
+                              "id": "zJFsD",
+                              "name": "Right",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "UsFMy",
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 5,
+                                  "stroke": "#3B82F6",
+                                  "strokeWidth": 1,
+                                  "padding": [
+                                    0,
+                                    14
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "kIUct",
+                                      "fill": "#374151",
+                                      "content": "編集",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "s81GHC",
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 5,
+                                  "stroke": "#EF4444",
+                                  "strokeWidth": 1,
+                                  "padding": [
+                                    0,
+                                    14
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "hhRi2",
+                                      "fill": "#EF4444",
+                                      "content": "削除",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         },
                         {
-                          "type": "frame",
-                          "id": "vzUai",
-                          "height": 26,
-                          "fill": "#94A3B81A",
-                          "cornerRadius": 6,
-                          "padding": [
-                            0,
-                            10
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "T4Xap",
-                              "fill": "#94A3B8",
-                              "content": "非公開",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "600"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "UsFMy",
-                          "height": 36,
-                          "fill": "#F1F5F9",
-                          "cornerRadius": 8,
-                          "padding": [
-                            0,
-                            14
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "kIUct",
-                              "fill": "#374151",
-                              "content": "編集",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "s81GHC",
-                          "height": 36,
-                          "fill": "#FEF2F2",
-                          "cornerRadius": 8,
-                          "padding": [
-                            0,
-                            14
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "hhRi2",
-                              "fill": "#EF4444",
-                              "content": "削除",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
+                          "type": "text",
+                          "id": "ydTq3",
+                          "name": "Content",
+                          "fill": "#64748B",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "DBスキーマ全体の見直しとインデックス設計を実施。クエリパフォーマンスを30%改善しました。",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -930,108 +1000,143 @@
                         },
                         "blur": 4
                       },
-                      "gap": 16,
+                      "layout": "vertical",
+                      "gap": 10,
                       "padding": [
                         16,
                         20
                       ],
-                      "alignItems": "center",
                       "children": [
                         {
                           "type": "frame",
-                          "id": "khXQZ",
+                          "id": "S6GjDP",
+                          "name": "Row",
                           "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 4,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
                           "children": [
                             {
-                              "type": "text",
-                              "id": "pF0Ou",
-                              "fill": "#94A3B8",
-                              "content": "2025年5月23日（金）",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
+                              "type": "frame",
+                              "id": "xXvDP",
+                              "name": "Left",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "pF0Ou",
+                                  "fill": "#94A3B8",
+                                  "content": "2025年5月23日（金）",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "cZUZS",
+                                  "fill": "#0F172A",
+                                  "content": "Spring Security JWT認証の実装",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "sVB9p",
+                                  "height": 26,
+                                  "fill": "#10B9811A",
+                                  "cornerRadius": 100,
+                                  "padding": [
+                                    0,
+                                    10
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "vnFfo",
+                                      "fill": "#10B981",
+                                      "content": "公開",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "600"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
-                              "type": "text",
-                              "id": "cZUZS",
-                              "fill": "#0F172A",
-                              "content": "Spring Security JWT認証の実装",
-                              "fontFamily": "Inter",
-                              "fontSize": 15,
-                              "fontWeight": "600"
+                              "type": "frame",
+                              "id": "pvOU2",
+                              "name": "Right",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "BMCB9",
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 5,
+                                  "stroke": "#3B82F6",
+                                  "strokeWidth": 1,
+                                  "padding": [
+                                    0,
+                                    14
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "it0AD",
+                                      "fill": "#374151",
+                                      "content": "編集",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "lbNTx",
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 5,
+                                  "stroke": "#EF4444",
+                                  "strokeWidth": 1,
+                                  "padding": [
+                                    0,
+                                    14
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "ou3QO",
+                                      "fill": "#EF4444",
+                                      "content": "削除",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         },
                         {
-                          "type": "frame",
-                          "id": "sVB9p",
-                          "height": 26,
-                          "fill": "#10B9811A",
-                          "cornerRadius": 6,
-                          "padding": [
-                            0,
-                            10
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "vnFfo",
-                              "fill": "#10B981",
-                              "content": "公開",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "600"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "BMCB9",
-                          "height": 36,
-                          "fill": "#F1F5F9",
-                          "cornerRadius": 8,
-                          "padding": [
-                            0,
-                            14
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "it0AD",
-                              "fill": "#374151",
-                              "content": "編集",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "lbNTx",
-                          "height": 36,
-                          "fill": "#FEF2F2",
-                          "cornerRadius": 8,
-                          "padding": [
-                            0,
-                            14
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "ou3QO",
-                              "fill": "#EF4444",
-                              "content": "削除",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
+                          "type": "text",
+                          "id": "G3MSc",
+                          "name": "Content",
+                          "fill": "#64748B",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Spring SecurityにJWT認証を組み込み、トークン検証ロジックを実装しました。",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1051,108 +1156,143 @@
                         },
                         "blur": 4
                       },
-                      "gap": 16,
+                      "layout": "vertical",
+                      "gap": 10,
                       "padding": [
                         16,
                         20
                       ],
-                      "alignItems": "center",
                       "children": [
                         {
                           "type": "frame",
-                          "id": "uZn5d",
+                          "id": "c4cnnh",
+                          "name": "Row",
                           "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 4,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
                           "children": [
                             {
-                              "type": "text",
-                              "id": "MPHlY",
-                              "fill": "#94A3B8",
-                              "content": "2025年5月22日（木）",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
+                              "type": "frame",
+                              "id": "G2LRI",
+                              "name": "Left",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "MPHlY",
+                                  "fill": "#94A3B8",
+                                  "content": "2025年5月22日（木）",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "VOzmo",
+                                  "fill": "#0F172A",
+                                  "content": "Dockerコンテナ設定の最適化",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "HWsft",
+                                  "height": 26,
+                                  "fill": "#94A3B81A",
+                                  "cornerRadius": 100,
+                                  "padding": [
+                                    0,
+                                    10
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "mFY8J",
+                                      "fill": "#94A3B8",
+                                      "content": "非公開",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "600"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
-                              "type": "text",
-                              "id": "VOzmo",
-                              "fill": "#0F172A",
-                              "content": "Dockerコンテナ設定の最適化",
-                              "fontFamily": "Inter",
-                              "fontSize": 15,
-                              "fontWeight": "600"
+                              "type": "frame",
+                              "id": "qpJX4",
+                              "name": "Right",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "fvNM4",
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 5,
+                                  "stroke": "#3B82F6",
+                                  "strokeWidth": 1,
+                                  "padding": [
+                                    0,
+                                    14
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "xH0IV",
+                                      "fill": "#374151",
+                                      "content": "編集",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "T5RfhP",
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 5,
+                                  "stroke": "#EF4444",
+                                  "strokeWidth": 1,
+                                  "padding": [
+                                    0,
+                                    14
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "uQIs4",
+                                      "fill": "#EF4444",
+                                      "content": "削除",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         },
                         {
-                          "type": "frame",
-                          "id": "HWsft",
-                          "height": 26,
-                          "fill": "#94A3B81A",
-                          "cornerRadius": 6,
-                          "padding": [
-                            0,
-                            10
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "mFY8J",
-                              "fill": "#94A3B8",
-                              "content": "非公開",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "600"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "fvNM4",
-                          "height": 36,
-                          "fill": "#F1F5F9",
-                          "cornerRadius": 8,
-                          "padding": [
-                            0,
-                            14
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "xH0IV",
-                              "fill": "#374151",
-                              "content": "編集",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "T5RfhP",
-                          "height": 36,
-                          "fill": "#FEF2F2",
-                          "cornerRadius": 8,
-                          "padding": [
-                            0,
-                            14
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "uQIs4",
-                              "fill": "#EF4444",
-                              "content": "削除",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
+                          "type": "text",
+                          "id": "v3y3v",
+                          "name": "Content",
+                          "fill": "#64748B",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "マルチステージビルド導入によりDockerイメージを60%削減。本番環境設定を最適化しました。",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     },
@@ -1172,108 +1312,143 @@
                         },
                         "blur": 4
                       },
-                      "gap": 16,
+                      "layout": "vertical",
+                      "gap": 10,
                       "padding": [
                         16,
                         20
                       ],
-                      "alignItems": "center",
                       "children": [
                         {
                           "type": "frame",
-                          "id": "krPmo",
+                          "id": "OlWp2",
+                          "name": "Row",
                           "width": "fill_container",
-                          "layout": "vertical",
-                          "gap": 4,
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
                           "children": [
                             {
-                              "type": "text",
-                              "id": "n7Son",
-                              "fill": "#94A3B8",
-                              "content": "2025年5月21日（水）",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "normal"
+                              "type": "frame",
+                              "id": "J0m37D",
+                              "name": "Left",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "n7Son",
+                                  "fill": "#94A3B8",
+                                  "content": "2025年5月21日（水）",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "S12gFX",
+                                  "fill": "#0F172A",
+                                  "content": "フロントエンドコンポーネント設計",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "d3bpZ",
+                                  "height": 26,
+                                  "fill": "#10B9811A",
+                                  "cornerRadius": 100,
+                                  "padding": [
+                                    0,
+                                    10
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "P9CSV",
+                                      "fill": "#10B981",
+                                      "content": "公開",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "600"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
-                              "type": "text",
-                              "id": "S12gFX",
-                              "fill": "#0F172A",
-                              "content": "フロントエンドコンポーネント設計",
-                              "fontFamily": "Inter",
-                              "fontSize": 15,
-                              "fontWeight": "600"
+                              "type": "frame",
+                              "id": "G2d28t",
+                              "name": "Right",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "frame",
+                                  "id": "QUKn7",
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 5,
+                                  "stroke": "#3B82F6",
+                                  "strokeWidth": 1,
+                                  "padding": [
+                                    0,
+                                    14
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "vqgTb",
+                                      "fill": "#374151",
+                                      "content": "編集",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "htUUZ",
+                                  "height": 36,
+                                  "fill": "#FFFFFF00",
+                                  "cornerRadius": 5,
+                                  "stroke": "#EF4444",
+                                  "strokeWidth": 1,
+                                  "padding": [
+                                    0,
+                                    14
+                                  ],
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "jzjxz",
+                                      "fill": "#EF4444",
+                                      "content": "削除",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 13,
+                                      "fontWeight": "500"
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         },
                         {
-                          "type": "frame",
-                          "id": "d3bpZ",
-                          "height": 26,
-                          "fill": "#10B9811A",
-                          "cornerRadius": 6,
-                          "padding": [
-                            0,
-                            10
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "P9CSV",
-                              "fill": "#10B981",
-                              "content": "公開",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "600"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "QUKn7",
-                          "height": 36,
-                          "fill": "#F1F5F9",
-                          "cornerRadius": 8,
-                          "padding": [
-                            0,
-                            14
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "vqgTb",
-                              "fill": "#374151",
-                              "content": "編集",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "htUUZ",
-                          "height": 36,
-                          "fill": "#FEF2F2",
-                          "cornerRadius": 8,
-                          "padding": [
-                            0,
-                            14
-                          ],
-                          "alignItems": "center",
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "jzjxz",
-                              "fill": "#EF4444",
-                              "content": "削除",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "500"
-                            }
-                          ]
+                          "type": "text",
+                          "id": "LQCLI",
+                          "name": "Content",
+                          "fill": "#64748B",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Reactコンポーネントの設計方針を策定。再利用可能なUIコンポーネントのカタログを作成しました。",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         }
                       ]
                     }
@@ -1358,27 +1533,62 @@
                     },
                     {
                       "type": "frame",
-                      "id": "C4QhYB",
-                      "height": 44,
-                      "fill": "#FFFFFF",
-                      "cornerRadius": 10,
-                      "stroke": "#E2E8F0",
-                      "strokeWidth": 1,
-                      "strokeAlignment": "inner",
-                      "padding": [
-                        0,
-                        20
-                      ],
+                      "id": "SqZsC",
+                      "name": "Header Actions",
+                      "gap": 10,
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "text",
-                          "id": "n3I8F",
-                          "fill": "#374151",
-                          "content": "下書き保存",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "normal"
+                          "type": "frame",
+                          "id": "C4QhYB",
+                          "height": 40,
+                          "fill": "#FFFFFF",
+                          "cornerRadius": 8,
+                          "stroke": "#E2E8F0",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
+                          "padding": [
+                            0,
+                            16
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "n3I8F",
+                              "fill": "#64748B",
+                              "content": "キャンセル",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "zlI7r",
+                          "name": "Save Button",
+                          "height": 40,
+                          "fill": "#3B82F6",
+                          "cornerRadius": 8,
+                          "padding": [
+                            0,
+                            16
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "lkqxN",
+                              "name": "Label",
+                              "fill": "#FFFFFF",
+                              "content": "日報を保存",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fontWeight": "600"
+                            }
+                          ]
                         }
                       ]
                     }
@@ -1770,9 +1980,11 @@
                           "type": "frame",
                           "id": "lEWTr",
                           "width": "fill_container",
-                          "height": 52,
-                          "fill": "#3B82F6",
-                          "cornerRadius": 10,
+                          "height": 44,
+                          "fill": "#FFFFFF00",
+                          "cornerRadius": 8,
+                          "stroke": "#94A3B8",
+                          "strokeWidth": 1,
                           "gap": 8,
                           "justifyContent": "center",
                           "alignItems": "center",
@@ -1780,10 +1992,10 @@
                             {
                               "type": "text",
                               "id": "wfVhK",
-                              "fill": "#FFFFFF",
-                              "content": "日報を保存",
+                              "fill": "#64748B",
+                              "content": "下書き保存",
                               "fontFamily": "Inter",
-                              "fontSize": 15,
+                              "fontSize": 14,
                               "fontWeight": "600"
                             }
                           ]
@@ -2507,13 +2719,6 @@
                                   "alignItems": "center",
                                   "children": [
                                     {
-                                      "type": "ellipse",
-                                      "id": "z2TPQ",
-                                      "fill": "#DBEAFE",
-                                      "width": 28,
-                                      "height": 28
-                                    },
-                                    {
                                       "type": "text",
                                       "id": "jI0fP",
                                       "fill": "#374151",
@@ -2616,13 +2821,6 @@
                                   "alignItems": "center",
                                   "children": [
                                     {
-                                      "type": "ellipse",
-                                      "id": "H1r8H",
-                                      "fill": "#DBEAFE",
-                                      "width": 28,
-                                      "height": 28
-                                    },
-                                    {
                                       "type": "text",
                                       "id": "Ly2jy",
                                       "fill": "#374151",
@@ -2724,13 +2922,6 @@
                                   "gap": 8,
                                   "alignItems": "center",
                                   "children": [
-                                    {
-                                      "type": "ellipse",
-                                      "id": "w7chqJ",
-                                      "fill": "#DBEAFE",
-                                      "width": 28,
-                                      "height": 28
-                                    },
                                     {
                                       "type": "text",
                                       "id": "PvCOV",
@@ -2842,13 +3033,6 @@
                                   "alignItems": "center",
                                   "children": [
                                     {
-                                      "type": "ellipse",
-                                      "id": "KR5x0",
-                                      "fill": "#DBEAFE",
-                                      "width": 28,
-                                      "height": 28
-                                    },
-                                    {
                                       "type": "text",
                                       "id": "FmX84",
                                       "fill": "#374151",
@@ -2951,13 +3135,6 @@
                                   "alignItems": "center",
                                   "children": [
                                     {
-                                      "type": "ellipse",
-                                      "id": "Udhhq",
-                                      "fill": "#DBEAFE",
-                                      "width": 28,
-                                      "height": 28
-                                    },
-                                    {
                                       "type": "text",
                                       "id": "XvODI",
                                       "fill": "#374151",
@@ -3059,13 +3236,6 @@
                                   "gap": 8,
                                   "alignItems": "center",
                                   "children": [
-                                    {
-                                      "type": "ellipse",
-                                      "id": "z0Z9m",
-                                      "fill": "#DBEAFE",
-                                      "width": 28,
-                                      "height": 28
-                                    },
                                     {
                                       "type": "text",
                                       "id": "aEtKz",

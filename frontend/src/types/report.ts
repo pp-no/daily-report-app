@@ -4,6 +4,7 @@
  */
 export interface DailyReport {
   id: number;
+  userName: string;
   title: string;
   todayTasks: string;
   tomorrowTasks: string;

@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
  */
 public record DailyReportResponse(
         Long id,
+        String userName,
         LocalDate reportDate,
         String title,
         String todayTasks,
@@ -31,6 +32,7 @@ public record DailyReportResponse(
     public static DailyReportResponse from(DailyReport report) {
         return new DailyReportResponse(
                 report.getId(),
+                report.getUser().getName(),
                 report.getReportDate(),
                 report.getTitle(),
                 report.getTodayTasks(),
