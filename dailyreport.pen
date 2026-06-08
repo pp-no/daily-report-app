@@ -3433,39 +3433,29 @@
                               "type": "frame",
                               "id": "RsJ1a",
                               "width": "fill_container",
-                              "gap": 16,
+                              "justifyContent": "center",
                               "alignItems": "center",
                               "children": [
                                 {
-                                  "type": "ellipse",
-                                  "id": "wJ0AM",
-                                  "fill": "#DBEAFE",
-                                  "width": 64,
-                                  "height": 64
-                                },
-                                {
                                   "type": "frame",
-                                  "id": "u4gGJI",
-                                  "layout": "vertical",
-                                  "gap": 4,
+                                  "id": "NXteH",
+                                  "name": "Avatar Circle",
+                                  "width": 64,
+                                  "height": 64,
+                                  "fill": "#3B82F6",
+                                  "cornerRadius": 32,
+                                  "justifyContent": "center",
+                                  "alignItems": "center",
                                   "children": [
                                     {
                                       "type": "text",
-                                      "id": "TZqM0",
-                                      "fill": "#0F172A",
-                                      "content": "山田 太郎",
+                                      "id": "Dq8ix",
+                                      "name": "Initial",
+                                      "fill": "#FFFFFF",
+                                      "content": "山",
                                       "fontFamily": "Inter",
-                                      "fontSize": 16,
+                                      "fontSize": 24,
                                       "fontWeight": "700"
-                                    },
-                                    {
-                                      "type": "text",
-                                      "id": "k4ZdX",
-                                      "fill": "#64748B",
-                                      "content": "yamada@example.com",
-                                      "fontFamily": "Inter",
-                                      "fontSize": 13,
-                                      "fontWeight": "normal"
                                     }
                                   ]
                                 }
@@ -3564,6 +3554,7 @@
                             {
                               "type": "frame",
                               "id": "rdRpN",
+                              "width": "fill_container",
                               "height": 44,
                               "fill": "#3B82F6",
                               "cornerRadius": 10,
@@ -3577,7 +3568,7 @@
                                   "type": "text",
                                   "id": "qGZED",
                                   "fill": "#FFFFFF",
-                                  "content": "プロフィールを保存",
+                                  "content": "プロフィールを更新",
                                   "fontFamily": "Inter",
                                   "fontSize": 14,
                                   "fontWeight": "600"
@@ -3723,7 +3714,7 @@
                                   "type": "text",
                                   "id": "s4WKtU",
                                   "fill": "#374151",
-                                  "content": "パスワード確認",
+                                  "content": "新しいパスワード（確認）",
                                   "fontFamily": "Inter",
                                   "fontSize": 13,
                                   "fontWeight": "600"
@@ -3760,8 +3751,9 @@
                             {
                               "type": "frame",
                               "id": "LAT1N",
+                              "width": "fill_container",
                               "height": 44,
-                              "fill": "#0F172A",
+                              "fill": "#3B82F6",
                               "cornerRadius": 10,
                               "padding": [
                                 0,
@@ -3787,7 +3779,7 @@
                     {
                       "type": "frame",
                       "id": "hmCS1",
-                      "width": 320,
+                      "width": "fill_container",
                       "layout": "vertical",
                       "gap": 16,
                       "children": [
@@ -3885,62 +3877,40 @@
                             },
                             {
                               "type": "frame",
-                              "id": "cBL8Q",
+                              "id": "mkI6h",
+                              "name": "Notification Toggle Row",
                               "width": "fill_container",
-                              "justifyContent": "space_between",
+                              "gap": 8,
                               "alignItems": "center",
                               "children": [
                                 {
-                                  "type": "frame",
-                                  "id": "K5LThP",
-                                  "layout": "vertical",
-                                  "gap": 2,
-                                  "children": [
-                                    {
-                                      "type": "text",
-                                      "id": "iPQPR",
-                                      "fill": "#374151",
-                                      "content": "メール通知",
-                                      "fontFamily": "Inter",
-                                      "fontSize": 13,
-                                      "fontWeight": "600"
-                                    },
-                                    {
-                                      "type": "text",
-                                      "id": "w2jYm4",
-                                      "fill": "#94A3B8",
-                                      "content": "前日の日報まとめを朝に受信",
-                                      "fontFamily": "Inter",
-                                      "fontSize": 11,
-                                      "fontWeight": "normal"
-                                    }
-                                  ]
+                                  "type": "rectangle",
+                                  "cornerRadius": 3,
+                                  "id": "Hvq26",
+                                  "name": "Checkbox",
+                                  "fill": "#3B82F6",
+                                  "width": 16,
+                                  "height": 16,
+                                  "stroke": "#3B82F6",
+                                  "strokeWidth": 1,
+                                  "strokeAlignment": "inner"
                                 },
                                 {
-                                  "type": "frame",
-                                  "id": "Y2J5dh",
-                                  "width": 44,
-                                  "height": 24,
-                                  "fill": "#3B82F6",
-                                  "cornerRadius": 12,
-                                  "layout": "none",
-                                  "children": [
-                                    {
-                                      "type": "ellipse",
-                                      "id": "i7IqLE",
-                                      "x": 22,
-                                      "y": 2,
-                                      "fill": "#FFFFFF",
-                                      "width": 20,
-                                      "height": 20
-                                    }
-                                  ]
+                                  "type": "text",
+                                  "id": "Tfond",
+                                  "name": "Checkbox Label",
+                                  "fill": "#374151",
+                                  "content": "業務開始30分前に通知する",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
                                 }
                               ]
                             },
                             {
                               "type": "frame",
                               "id": "N0wev",
+                              "width": "fill_container",
                               "height": 44,
                               "fill": "#3B82F6",
                               "cornerRadius": 10,
