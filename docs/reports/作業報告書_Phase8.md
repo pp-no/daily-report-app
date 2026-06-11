@@ -4,7 +4,7 @@
 |---|---|
 | 日付 | - |
 | プロジェクト | daily-report-app |
-| 担当者 | - |
+| 担当者 | oki |
 | フェーズ | Phase 8：テスト（JUnit・Mockito・MockMvc） |
 
 ---

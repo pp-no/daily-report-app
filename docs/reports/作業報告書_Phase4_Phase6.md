@@ -4,7 +4,7 @@
 |---|---|
 | 日付 | - |
 | プロジェクト | 日報管理アプリ（DailyReport App） |
-| 担当者 | - |
+| 担当者 | oki |
 | フェーズ | Phase 4：REST API動作確認 / Phase 5：JWT認証 / Phase 6：メール通知・定時実行 |
 
 ---
