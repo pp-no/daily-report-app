@@ -130,20 +130,12 @@ const ReportFormPage = () => {
               キャンセル
             </button>
             <button
-              type="button"
-              style={S.draftButton}
-              onClick={handleDraftButtonClick}
-              disabled={draftSaving || saving}
-            >
-              {draftSaving ? '保存中...' : '下書き保存'}
-            </button>
-            <button
               type="submit"
               form="report-form"
               style={S.saveButton}
               disabled={saving || draftSaving}
             >
-              {saving ? '保存中...' : isEdit ? '更新する' : '投稿する'}
+              {saving ? '保存中...' : isEdit ? '更新する' : '日報を保存'}
             </button>
           </div>
         </div>
@@ -260,6 +252,14 @@ const ReportFormPage = () => {
                 他のユーザーに公開する
               </label>
             </div>
+            <button
+              type="button"
+              style={S.draftButton}
+              onClick={handleDraftButtonClick}
+              disabled={draftSaving || saving}
+            >
+              {draftSaving ? '保存中...' : '下書き保存'}
+            </button>
           </div>
         </form>
       </div>
@@ -303,13 +303,14 @@ const S = {
   },
   draftButton: {
     background: 'transparent',
-    color: '#3b82f6',
-    border: '1px solid #3b82f6',
-    borderRadius: 6,
-    padding: '9px 18px',
-    fontSize: 13,
+    color: '#64748b',
+    border: '1px solid #94a3b8',
+    borderRadius: 8,
+    padding: '11px 18px',
+    fontSize: 14,
     fontWeight: 600,
     cursor: 'pointer',
+    width: '100%',
   },
   saveButton: {
     background: '#3b82f6',
