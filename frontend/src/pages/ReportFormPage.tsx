@@ -26,6 +26,7 @@ const ReportFormPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [draftSaving, setDraftSaving] = useState(false);
+  const [showDraftConfirm, setShowDraftConfirm] = useState(false);
 
   /**
    * 編集時：既存の日報データをAPIから取得してフォームに反映
@@ -68,8 +69,18 @@ const ReportFormPage = () => {
     }
   };
 
-  /** 下書き保存：isPublic を false に固定して保存する */
-  const handleDraftSave = async () => {
+  /** 下書き保存ボタン押下：公開済み編集時は確認ダイアログを出す */
+  const handleDraftButtonClick = () => {
+    if (isEdit && form.isPublic) {
+      setShowDraftConfirm(true);
+    } else {
+      executeDraftSave();
+    }
+  };
+
+  /** 下書き保存の実行 */
+  const executeDraftSave = async () => {
+    setShowDraftConfirm(false);
     setError(null);
     setDraftSaving(true);
     try {
@@ -121,7 +132,7 @@ const ReportFormPage = () => {
             <button
               type="button"
               style={S.draftButton}
-              onClick={handleDraftSave}
+              onClick={handleDraftButtonClick}
               disabled={draftSaving || saving}
             >
               {draftSaving ? '保存中...' : '下書き保存'}
@@ -138,6 +149,31 @@ const ReportFormPage = () => {
         </div>
 
         {error && <div style={S.error}>{error}</div>}
+
+        {/* 公開済み日報を下書きに戻す確認ダイアログ */}
+        {showDraftConfirm && (
+          <div style={S.overlay}>
+            <div style={S.dialog}>
+              <p style={S.dialogText}>公開済みの日報を非公開に戻しますか？</p>
+              <div style={S.dialogActions}>
+                <button
+                  type="button"
+                  style={S.cancelButton}
+                  onClick={() => setShowDraftConfirm(false)}
+                >
+                  キャンセル
+                </button>
+                <button
+                  type="button"
+                  style={S.draftButton}
+                  onClick={executeDraftSave}
+                >
+                  非公開にして保存
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* フォームグリッド：デスクトップ2カラム / モバイル1カラム */}
         <form id="report-form" onSubmit={handleSubmit} style={formGridStyle}>
@@ -353,6 +389,34 @@ const S = {
     fontSize: 13,
     color: '#374151',
     cursor: 'pointer',
+  },
+  overlay: {
+    position: 'fixed' as const,
+    inset: 0,
+    background: 'rgba(0,0,0,0.4)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 100,
+  },
+  dialog: {
+    background: '#ffffff',
+    borderRadius: 8,
+    padding: '24px 28px',
+    width: 340,
+    boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+  },
+  dialogText: {
+    fontSize: 14,
+    color: '#1e293b',
+    marginBottom: 20,
+    marginTop: 0,
+    lineHeight: 1.6,
+  },
+  dialogActions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: 10,
   },
 };
 
