@@ -25,6 +25,7 @@ const ReportFormPage = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [draftSaving, setDraftSaving] = useState(false);
 
   /**
    * 編集時：既存の日報データをAPIから取得してフォームに反映
@@ -67,6 +68,25 @@ const ReportFormPage = () => {
     }
   };
 
+  /** 下書き保存：isPublic を false に固定して保存する */
+  const handleDraftSave = async () => {
+    setError(null);
+    setDraftSaving(true);
+    try {
+      const draftForm = { ...form, isPublic: false };
+      if (isEdit) {
+        await updateReport(Number(id), draftForm);
+      } else {
+        await createReport(draftForm);
+      }
+      navigate('/reports');
+    } catch {
+      setError('下書き保存に失敗しました');
+    } finally {
+      setDraftSaving(false);
+    }
+  };
+
   // モバイル時は1カラム、デスクトップ時は2カラム
   const containerStyle: React.CSSProperties = {
     padding: isMobile ? '16px' : '32px 40px',
@@ -99,12 +119,20 @@ const ReportFormPage = () => {
               キャンセル
             </button>
             <button
+              type="button"
+              style={S.draftButton}
+              onClick={handleDraftSave}
+              disabled={draftSaving || saving}
+            >
+              {draftSaving ? '保存中...' : '下書き保存'}
+            </button>
+            <button
               type="submit"
               form="report-form"
               style={S.saveButton}
-              disabled={saving}
+              disabled={saving || draftSaving}
             >
-              {isEdit ? '更新する' : '日報を保存'}
+              {saving ? '保存中...' : isEdit ? '更新する' : '投稿する'}
             </button>
           </div>
         </div>
@@ -235,6 +263,16 @@ const S = {
     borderRadius: 6,
     padding: '9px 18px',
     fontSize: 13,
+    cursor: 'pointer',
+  },
+  draftButton: {
+    background: 'transparent',
+    color: '#3b82f6',
+    border: '1px solid #3b82f6',
+    borderRadius: 6,
+    padding: '9px 18px',
+    fontSize: 13,
+    fontWeight: 600,
     cursor: 'pointer',
   },
   saveButton: {
