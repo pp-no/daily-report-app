@@ -300,6 +300,7 @@ const S = {
     padding: '9px 18px',
     fontSize: 13,
     cursor: 'pointer',
+    whiteSpace: 'nowrap' as const,
   },
   draftButton: {
     background: 'transparent',
