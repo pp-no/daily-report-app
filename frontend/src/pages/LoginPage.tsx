@@ -14,7 +14,7 @@ const LoginPage = () => {
    * ログインフォーム送信
    * 成功時はJWTトークンをlocalStorageに保存して日報一覧へ遷移
    */
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
