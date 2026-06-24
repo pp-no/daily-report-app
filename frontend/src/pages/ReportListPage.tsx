@@ -16,8 +16,12 @@ const ReportListPage = () => {
    */
   const handleDelete = async (id: number) => {
     if (!confirm('この日報を削除しますか？')) return;
-    await deleteReport(id);
-    fetchReports();
+    try {
+      await deleteReport(id);
+      fetchReports();
+    } catch {
+      alert('削除に失敗しました。もう一度お試しください。');
+    }
   };
 
   const containerStyle: React.CSSProperties = {
