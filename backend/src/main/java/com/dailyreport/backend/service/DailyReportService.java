@@ -4,6 +4,7 @@ import com.dailyreport.backend.api.dto.DailyReportRequest;
 import com.dailyreport.backend.api.dto.DailyReportResponse;
 import com.dailyreport.backend.domain.entity.DailyReport;
 import com.dailyreport.backend.domain.entity.User;
+import com.dailyreport.backend.domain.exception.DuplicateReportException;
 import com.dailyreport.backend.domain.exception.ReportAccessDeniedException;
 import com.dailyreport.backend.domain.exception.ReportNotFoundException;
 import com.dailyreport.backend.domain.repository.DailyReportRepository;
@@ -47,9 +48,12 @@ public class DailyReportService {
         return DailyReportResponse.from(report);
     }
 
-    /** 日報を新規作成してDBに保存する。 */
+    /** 日報を新規作成してDBに保存する。同じ日付の日報が既に存在する場合は例外をスロー。 */
     public DailyReportResponse create(DailyReportRequest request, String email) {
         User user = findUserByEmail(email);
+        if (reportRepository.findByUserIdAndReportDate(user.getId(), request.reportDate()).isPresent()) {
+            throw new DuplicateReportException(request.reportDate());
+        }
         DailyReport report = new DailyReport();
         report.setUser(user);
         report.setReportDate(request.reportDate());

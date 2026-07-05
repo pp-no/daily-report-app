@@ -1,5 +1,6 @@
 package com.dailyreport.backend.api.exception;
 
+import com.dailyreport.backend.domain.exception.DuplicateReportException;
 import com.dailyreport.backend.domain.exception.ReportAccessDeniedException;
 import com.dailyreport.backend.domain.exception.ReportNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ReportNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(ReportNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(e.getMessage()));
+    }
+
+    /**
+     * 同じ日付の日報が既に存在する場合 → 409 Conflict
+     * Service の create() で重複チェックに引っかかった場合にスローされる。
+     */
+    @ExceptionHandler(DuplicateReportException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicate(DuplicateReportException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponse(e.getMessage()));
     }
 

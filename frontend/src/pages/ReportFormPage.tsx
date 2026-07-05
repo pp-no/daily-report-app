@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import apiClient from '../api/client';
 import { useReports } from '../hooks/useReports';
 import useIsMobile from '../hooks/useIsMobile';
@@ -62,8 +63,12 @@ const ReportFormPage = () => {
         await createReport(form);
       }
       navigate('/reports');
-    } catch {
-      setError('保存に失敗しました');
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 409) {
+        setError('この日付の日報はすでに存在します');
+      } else {
+        setError('保存に失敗しました');
+      }
     } finally {
       setSaving(false);
     }
@@ -91,8 +96,12 @@ const ReportFormPage = () => {
         await createReport(draftForm);
       }
       navigate('/reports');
-    } catch {
-      setError('下書き保存に失敗しました');
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 409) {
+        setError('この日付の日報はすでに存在します');
+      } else {
+        setError('下書き保存に失敗しました');
+      }
     } finally {
       setDraftSaving(false);
     }
