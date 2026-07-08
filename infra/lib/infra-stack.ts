@@ -82,11 +82,11 @@ export class InfraStack extends cdk.Stack {
       securityGroups: [dbSg],
       databaseName: 'dailyreport',
       credentials: rds.Credentials.fromSecret(dbSecret),
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      deletionProtection: false,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      deletionProtection: true,
       multiAz: false,
       storageEncrypted: true,
-      backupRetention: cdk.Duration.days(0),
+      backupRetention: cdk.Duration.days(7),
     });
 
     // ===== ECR URI 出力（フェーズ1で確認できるようにECS無効時も出力）=====
