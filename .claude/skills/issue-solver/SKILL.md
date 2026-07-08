@@ -1,6 +1,6 @@
 ---
 name: issue-solver
-description: GitHubのIssueをPlanner→Generator→Evaluatorの3エージェントで対応する。「Issueを対応して」「Issue #Nを3エージェントで」「Issue #Nを解決して」などと言われたときに使う。
+description: GitHubのIssueをPlanner→Generator→Evaluatorの3エージェントで優先順位が高いIssueを対応する。「Issueを対応して」「Issue #Nを3エージェントで」「Issue #Nを解決して」などと言われたときに使う。
 ---
 
 # Issue Solver スキル（3エージェント方式）
