@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DailyReport — Design Guideline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --page-bg:   #f5f6f8;
+      --white:     #ffffff;
+      --border:    #e8eaed;
+      --text-h:    #111827;
+      --text-body: #374151;
+      --text-sub:  #6b7280;
+      --text-tiny: #9ca3af;
+      --accent:    #3b82f6;
+      --nav-w:     256px;
+      --radius:    8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--page-bg);
+      color: var(--text-body);
+      display: flex;
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── SIDEBAR ── */
+    aside {
+      width: var(--nav-w);
+      min-height: 100vh;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .nav-brand {
+      padding: 28px 24px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-h);
+      letter-spacing: -0.3px;
+    }
+    .nav-brand-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-tiny);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .nav-group { padding: 20px 0 4px; }
+    .nav-group-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-tiny);
+      padding: 0 24px 8px;
+    }
+    aside a {
+      display: block;
+      padding: 8px 24px;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-sub);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.1s, border-color 0.1s, background 0.1s;
+    }
+    aside a:hover { color: var(--text-h); background: var(--page-bg); }
+    aside a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 500; background: #eff6ff; }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      padding: 56px 64px;
+      max-width: 900px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      margin-bottom: 56px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-header-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .page-header-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-h);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+    .page-header-desc {
+      font-size: 14px;
+      color: var(--text-sub);
+      margin-top: 10px;
+      max-width: 480px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 72px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .section.visible { opacity: 1; transform: translateY(0); }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-h);
+      margin-bottom: 4px;
+      letter-spacing: -0.3px;
+    }
+    .section-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 24px;
+    }
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 28px;
+    }
+
+    /* ── COLOR SWATCHES ── */
+    .color-group { margin-bottom: 36px; }
+    .color-group-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 16px;
+    }
+    .swatch {
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .swatch:hover { transform: translateY(-2px); }
+    .swatch-color {
+      height: 80px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .swatch-color::after {
+      content: 'Copied';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--white);
+      background: rgba(0,0,0,0.35);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .swatch.copied .swatch-color::after { opacity: 1; }
+    .swatch-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-h);
+      margin-top: 10px;
+    }
+    .swatch-hex {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+    .swatch-role {
+      font-size: 11px;
+      color: var(--text-tiny);
+      margin-top: 2px;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .type-table { width: 100%; border-collapse: collapse; }
+    .type-table th {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-tiny);
+      text-align: left;
+      padding: 0 16px 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .type-table td {
+      padding: 16px 16px 16px 0;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .type-token {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      background: #eff6ff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .type-size-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+    .type-preview {
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--text-h);
+    }
+    .type-usage {
+      font-size: 11px;
+      color: var(--text-tiny);
+    }
+
+    /* ── SPACING ── */
+    .spacing-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .spacing-token {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      background: #eff6ff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      width: 90px;
+      flex-shrink: 0;
+    }
+    .spacing-bar-wrap { flex: 1; }
+    .spacing-bar {
+      height: 16px;
+      background: #dbeafe;
+      border: 1px solid #93c5fd;
+      border-radius: 3px;
+    }
+    .spacing-px {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--text-sub);
+      width: 36px;
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .spacing-use {
+      font-size: 12px;
+      color: var(--text-tiny);
+      width: 180px;
+      flex-shrink: 0;
+    }
+
+    /* ── RADIUS ── */
+    .radius-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 16px;
+    }
+    .radius-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px 16px;
+      text-align: center;
+    }
+    .radius-box {
+      width: 56px;
+      height: 56px;
+      background: #dbeafe;
+      border: 2px solid #93c5fd;
+      margin: 0 auto 14px;
+    }
+    .radius-token {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--accent);
+      background: #eff6ff;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    .radius-val {
+      font-size: 12px;
+      color: var(--text-tiny);
+      margin-top: 6px;
+    }
+
+    /* ── SHADOW ── */
+    .shadow-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .shadow-preview {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 32px 24px;
+    }
+    .shadow-token {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      background: #eff6ff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .shadow-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-tiny);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* ── COMPONENTS ── */
+    .comp-block {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .comp-block-header {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--page-bg);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .comp-block-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-tiny);
+    }
+    .comp-block-body {
+      padding: 24px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .comp-block-body.col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* ── APP COMPONENTS ── */
+    .btn-primary {
+      background: #3b82f6; color: #fff; border: none;
+      border-radius: 6px; padding: 9px 18px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .btn-outline-blue {
+      background: transparent; color: #3b82f6;
+      border: 1px solid #3b82f6; border-radius: 5px;
+      padding: 4px 12px; font-size: 12px; cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .btn-outline-red {
+      background: transparent; color: #ef4444;
+      border: 1px solid #ef4444; border-radius: 5px;
+      padding: 4px 12px; font-size: 12px; cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .btn-draft {
+      background: transparent; color: #64748b;
+      border: 1px solid #94a3b8; border-radius: 8px;
+      padding: 11px 18px; font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: 'Noto Sans JP', sans-serif;
+    }
+    .btn-cancel {
+      background: transparent; color: #64748b;
+      border: 1px solid #e2e8f0; border-radius: 6px;
+      padding: 9px 18px; font-size: 13px; cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .badge-pub {
+      font-size: 11px; background: #d1fae5; color: #059669;
+      padding: 2px 10px; border-radius: 999px; font-weight: 500;
+    }
+    .badge-prv {
+      font-size: 11px; background: #f1f5f9; color: #94a3b8;
+      padding: 2px 10px; border-radius: 999px; font-weight: 500;
+    }
+    .input-field {
+      width: 280px; padding: 9px 12px;
+      border: 1px solid #e2e8f0; border-radius: 6px;
+      font-size: 14px; color: #1e293b; outline: none;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .error-msg {
+      background: #fef2f2; color: #ef4444;
+      border: 1px solid #fecaca; border-radius: 6px;
+      padding: 10px 14px; font-size: 13px;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .report-card {
+      background: #fff; border: 1px solid #e2e8f0;
+      border-radius: 8px; padding: 16px 20px; width: 100%;
+    }
+    .report-card-row { display: flex; justify-content: space-between; align-items: center; }
+    .report-card-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .report-card-date { font-size: 12px; color: #94a3b8; }
+    .report-card-title { font-size: 14px; font-weight: 600; color: #1e293b; }
+    .report-card-body { font-size: 13px; color: #64748b; margin-top: 10px; line-height: 1.6; }
+    .report-card-actions { display: flex; gap: 8px; }
+
+    .sidebar-preview {
+      background: #1a2536; border-radius: 10px;
+      padding: 20px 0; width: 196px;
+    }
+    .sp-logo {
+      padding: 0 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sp-icon {
+      width: 28px; height: 28px; background: #3b82f6;
+      border-radius: 6px; display: flex; align-items: center;
+      justify-content: center; font-size: 12px; flex-shrink: 0;
+    }
+    .sp-name { color: #fff; font-size: 13px; font-weight: 600; }
+    .sp-sub  { color: #64748b; font-size: 10px; margin-top: 1px; }
+    .sp-nav  { padding: 12px 0; }
+    .sp-item {
+      padding: 8px 20px; font-size: 13px;
+      color: #94a3b8; display: flex; align-items: center; gap: 8px;
+    }
+    .sp-item.active {
+      color: #fff; background: rgba(59,130,246,0.15);
+      border-left: 3px solid #3b82f6; padding-left: 17px;
+    }
+
+    .tag-new {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      background: #dcfce7;
+      color: #16a34a;
+      padding: 1px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside>
+  <div class="nav-brand">
+    <div class="nav-brand-name">DailyReport</div>
+    <div class="nav-brand-label">Design Guideline</div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Foundation</div>
+    <a href="#color" class="active">Color</a>
+    <a href="#typography">Typography</a>
+    <a href="#spacing">Spacing</a>
+    <a href="#radius">Border Radius</a>
+    <a href="#shadow">Shadow</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Components</div>
+    <a href="#buttons">Button</a>
+    <a href="#badges">Badge</a>
+    <a href="#form">Form</a>
+    <a href="#card">Card</a>
+    <a href="#sidebar-comp">Sidebar</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main>
+
+  <div class="page-header">
+    <div class="page-header-eyebrow">Design Guideline · v1.0</div>
+    <h1 class="page-header-title">DailyReport<br>Design System</h1>
+    <p class="page-header-desc">カラー・タイポグラフィ・スペーシングなどの基本トークンと、ボタン・カードなどのコンポーネントを定義します。</p>
+  </div>
+
+  <!-- ① COLOR -->
+  <section class="section" id="color">
+    <div class="section-title">Color</div>
+    <div class="section-desc">アプリ全体で使用するカラーパレット。スウォッチをクリックで Hex 値をコピーできます。</div>
+    <div class="section-divider"></div>
+
+    <div class="color-group">
+      <div class="color-group-name">Brand</div>
+      <div class="swatch-grid">
+        <div class="swatch" onclick="copyHex(this,'#3b82f6')">
+          <div class="swatch-color" style="background:#3b82f6;"></div>
+          <div class="swatch-name">Primary</div>
+          <div class="swatch-hex">#3b82f6</div>
+          <div class="swatch-role">ボタン・アクセント</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'rgba(59,130,246,0.12)')">
+          <div class="swatch-color" style="background:rgba(59,130,246,0.12);border:1px solid #bfdbfe;"></div>
+          <div class="swatch-name">Primary Dim</div>
+          <div class="swatch-hex">rgba(59,130,246,0.12)</div>
+          <div class="swatch-role">アクティブ背景</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-group">
+      <div class="color-group-name">Background</div>
+      <div class="swatch-grid">
+        <div class="swatch" onclick="copyHex(this,'#f1f5f9')">
+          <div class="swatch-color" style="background:#f1f5f9;"></div>
+          <div class="swatch-name">Page</div>
+          <div class="swatch-hex">#f1f5f9</div>
+          <div class="swatch-role">ページ背景</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#ffffff')">
+          <div class="swatch-color" style="background:#ffffff;border:1px solid #e8eaed;"></div>
+          <div class="swatch-name">White</div>
+          <div class="swatch-hex">#ffffff</div>
+          <div class="swatch-role">カード・入力欄</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#1a2536')">
+          <div class="swatch-color" style="background:#1a2536;"></div>
+          <div class="swatch-name">Sidebar</div>
+          <div class="swatch-hex">#1a2536</div>
+          <div class="swatch-role">サイドバー背景</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-group">
+      <div class="color-group-name">Text</div>
+      <div class="swatch-grid">
+        <div class="swatch" onclick="copyHex(this,'#1e293b')">
+          <div class="swatch-color" style="background:#1e293b;"></div>
+          <div class="swatch-name">Primary</div>
+          <div class="swatch-hex">#1e293b</div>
+          <div class="swatch-role">見出し・本文</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#374151')">
+          <div class="swatch-color" style="background:#374151;"></div>
+          <div class="swatch-name">Label</div>
+          <div class="swatch-hex">#374151</div>
+          <div class="swatch-role">フォームラベル</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#64748b')">
+          <div class="swatch-color" style="background:#64748b;"></div>
+          <div class="swatch-name">Secondary</div>
+          <div class="swatch-hex">#64748b</div>
+          <div class="swatch-role">サブテキスト</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#94a3b8')">
+          <div class="swatch-color" style="background:#94a3b8;"></div>
+          <div class="swatch-name">Muted</div>
+          <div class="swatch-hex">#94a3b8</div>
+          <div class="swatch-role">プレースホルダー</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#cbd5e1')">
+          <div class="swatch-color" style="background:#cbd5e1;"></div>
+          <div class="swatch-name">Sidebar User</div>
+          <div class="swatch-hex">#cbd5e1</div>
+          <div class="swatch-role">サイドバーユーザー名</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-group">
+      <div class="color-group-name">Border</div>
+      <div class="swatch-grid">
+        <div class="swatch" onclick="copyHex(this,'#e2e8f0')">
+          <div class="swatch-color" style="background:#e2e8f0;"></div>
+          <div class="swatch-name">Default</div>
+          <div class="swatch-hex">#e2e8f0</div>
+          <div class="swatch-role">入力欄・カード</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#94a3b8')">
+          <div class="swatch-color" style="background:#94a3b8;"></div>
+          <div class="swatch-name">Muted</div>
+          <div class="swatch-hex">#94a3b8</div>
+          <div class="swatch-role">控えめなボーダー</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-group">
+      <div class="color-group-name">Semantic</div>
+      <div class="swatch-grid">
+        <div class="swatch" onclick="copyHex(this,'#ef4444')">
+          <div class="swatch-color" style="background:#ef4444;"></div>
+          <div class="swatch-name">Error</div>
+          <div class="swatch-hex">#ef4444</div>
+          <div class="swatch-role">エラー・削除</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#fef2f2')">
+          <div class="swatch-color" style="background:#fef2f2;border:1px solid #fecaca;"></div>
+          <div class="swatch-name">Error BG</div>
+          <div class="swatch-hex">#fef2f2</div>
+          <div class="swatch-role">エラー背景</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#fecaca')">
+          <div class="swatch-color" style="background:#fecaca;"></div>
+          <div class="swatch-name">Error Border</div>
+          <div class="swatch-hex">#fecaca</div>
+          <div class="swatch-role">エラーボーダー</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#059669')">
+          <div class="swatch-color" style="background:#059669;"></div>
+          <div class="swatch-name">Success</div>
+          <div class="swatch-hex">#059669</div>
+          <div class="swatch-role">公開バッジ文字</div>
+        </div>
+        <div class="swatch" onclick="copyHex(this,'#d1fae5')">
+          <div class="swatch-color" style="background:#d1fae5;border:1px solid #a7f3d0;"></div>
+          <div class="swatch-name">Success BG</div>
+          <div class="swatch-hex">#d1fae5</div>
+          <div class="swatch-role">公開バッジ背景</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② TYPOGRAPHY -->
+  <section class="section" id="typography">
+    <div class="section-title">Typography</div>
+    <div class="section-desc">フォント: Noto Sans JP。7段階のサイズスケール。</div>
+    <div class="section-divider"></div>
+
+    <table class="type-table">
+      <thead>
+        <tr>
+          <th style="width:120px;">Token</th>
+          <th style="width:60px;">Size</th>
+          <th>Preview</th>
+          <th style="width:160px;">Usage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="type-token">font.size.2xl</span></td>
+          <td><span class="type-size-val">22px</span></td>
+          <td><span class="type-preview" style="font-size:22px;font-weight:700;">日報一覧</span></td>
+          <td><span class="type-usage">ページ見出し h1</span></td>
+        </tr>
+        <tr>
+          <td><span class="type-token">font.size.xl</span></td>
+          <td><span class="type-size-val">20px</span></td>
+          <td><span class="type-preview" style="font-size:20px;font-weight:700;">DailyReport</span></td>
+          <td><span class="type-usage">認証画面タイトル</span></td>
+        </tr>
+        <tr>
+          <td><span class="type-token">font.size.lg</span></td>
+          <td><span class="type-size-val">15px</span></td>
+          <td><span class="type-preview" style="font-size:15px;font-weight:600;">DailyReport</span></td>
+          <td><span class="type-usage">サイドバーロゴ</span></td>
+        </tr>
+        <tr>
+          <td><span class="type-token">font.size.md</span></td>
+          <td><span class="type-size-val">14px</span></td>
+          <td><span class="type-preview" style="font-size:14px;">本文・入力欄・ナビゲーション</span></td>
+          <td><span class="type-usage">Body, Input</span></td>
+        </tr>
+        <tr>
+          <td><span class="type-token">font.size.base</span></td>
+          <td><span class="type-size-val">13px</span></td>
+          <td><span class="type-preview" style="font-size:13px;">ラベル・サブテキスト・ボタン</span></td>
+          <td><span class="type-usage">Label, Button</span></td>
+        </tr>
+        <tr>
+          <td><span class="type-token">font.size.sm</span></td>
+          <td><span class="type-size-val">12px</span></td>
+          <td><span class="type-preview" style="font-size:12px;">日付・補足テキスト</span></td>
+          <td><span class="type-usage">Caption, Date</span></td>
+        </tr>
+        <tr>
+          <td><span class="type-token">font.size.xs</span></td>
+          <td><span class="type-size-val">11px</span></td>
+          <td><span class="type-preview" style="font-size:11px;">バッジ・最小テキスト</span></td>
+          <td><span class="type-usage">Badge, Tiny</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:28px;">
+      <div style="font-size:12px;font-weight:500;color:var(--text-sub);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Font Weight</div>
+      <div style="display:flex;gap:24px;">
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-tiny);margin-bottom:8px;">700 · Bold</div>
+          <div style="font-size:20px;font-weight:700;color:var(--text-h);">見出し Bold</div>
+        </div>
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-tiny);margin-bottom:8px;">600 · Semibold</div>
+          <div style="font-size:20px;font-weight:600;color:var(--text-h);">ボタン Semibold</div>
+        </div>
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px 24px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-tiny);margin-bottom:8px;">500 · Medium</div>
+          <div style="font-size:20px;font-weight:500;color:var(--text-h);">ラベル Medium</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ SPACING -->
+  <section class="section" id="spacing">
+    <div class="section-title">Spacing</div>
+    <div class="section-desc">4px ベースのスペーシングスケール。</div>
+    <div class="section-divider"></div>
+    <div class="spacing-item"><span class="spacing-token">spacing.1</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:4px;"></div></div><span class="spacing-px">4px</span><span class="spacing-use">アイコン余白</span></div>
+    <div class="spacing-item"><span class="spacing-token">spacing.2</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:8px;"></div></div><span class="spacing-px">8px</span><span class="spacing-use">ボタン間・ギャップ</span></div>
+    <div class="spacing-item"><span class="spacing-token">spacing.3</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:12px;"></div></div><span class="spacing-px">12px</span><span class="spacing-use">入力欄 padding</span></div>
+    <div class="spacing-item"><span class="spacing-token">spacing.4</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16px;"></div></div><span class="spacing-px">16px</span><span class="spacing-use">フィールド間・モバイル</span></div>
+    <div class="spacing-item"><span class="spacing-token">spacing.5</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:20px;"></div></div><span class="spacing-px">20px</span><span class="spacing-use">サイドバー padding</span></div>
+    <div class="spacing-item"><span class="spacing-token">spacing.6</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24px;"></div></div><span class="spacing-px">24px</span><span class="spacing-use">ロゴエリア padding</span></div>
+    <div class="spacing-item"><span class="spacing-token">spacing.7</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:28px;"></div></div><span class="spacing-px">28px</span><span class="spacing-use">ヘッダー下余白</span></div>
+    <div class="spacing-item"><span class="spacing-token">spacing.10</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:40px;"></div></div><span class="spacing-px">40px</span><span class="spacing-use">デスクトップ横 padding</span></div>
+  </section>
+
+  <!-- ④ RADIUS -->
+  <section class="section" id="radius">
+    <div class="section-title">Border Radius</div>
+    <div class="section-desc">コンポーネントの角丸スケール。</div>
+    <div class="section-divider"></div>
+    <div class="radius-grid">
+      <div class="radius-card"><div class="radius-box" style="border-radius:5px;"></div><div class="radius-token">radius.sm</div><div class="radius-val">5px · 編集/削除ボタン</div></div>
+      <div class="radius-card"><div class="radius-box" style="border-radius:6px;"></div><div class="radius-token">radius.md</div><div class="radius-val">6px · 入力欄・ボタン</div></div>
+      <div class="radius-card"><div class="radius-box" style="border-radius:8px;"></div><div class="radius-token">radius.lg</div><div class="radius-val">8px · カード</div></div>
+      <div class="radius-card"><div class="radius-box" style="border-radius:12px;"></div><div class="radius-token">radius.xl</div><div class="radius-val">12px · 認証カード</div></div>
+      <div class="radius-card"><div class="radius-box" style="border-radius:999px;"></div><div class="radius-token">radius.full</div><div class="radius-val">999px · バッジ</div></div>
+      <div class="radius-card"><div class="radius-box" style="border-radius:50%;"></div><div class="radius-token">radius.circle</div><div class="radius-val">50% · アバター</div></div>
+    </div>
+  </section>
+
+  <!-- ⑤ SHADOW -->
+  <section class="section" id="shadow">
+    <div class="section-title">Shadow</div>
+    <div class="section-desc">カード・ダイアログのドロップシャドウ。</div>
+    <div class="section-divider"></div>
+    <div class="shadow-grid">
+      <div class="shadow-preview" style="box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <div class="shadow-token">shadow.card</div>
+        <div class="shadow-val">0 4px 24px<br>rgba(0,0,0,0.08)</div>
+      </div>
+      <div class="shadow-preview" style="box-shadow:0 4px 24px rgba(0,0,0,0.15);">
+        <div class="shadow-token">shadow.dialog</div>
+        <div class="shadow-val">0 4px 24px<br>rgba(0,0,0,0.15)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑥ BUTTON -->
+  <section class="section" id="buttons">
+    <div class="section-title">Button</div>
+    <div class="section-desc">アクションの重要度に応じてスタイルを使い分ける。</div>
+    <div class="section-divider"></div>
+
+    <div class="comp-block">
+      <div class="comp-block-header"><span class="comp-block-label">Primary · Edit · Delete · Draft · Cancel</span></div>
+      <div class="comp-block-body">
+        <button class="btn-primary">＋ 新規作成</button>
+        <button class="btn-outline-blue">編集</button>
+        <button class="btn-outline-red">削除</button>
+        <button class="btn-draft">下書き保存</button>
+        <button class="btn-cancel">キャンセル</button>
+      </div>
+    </div>
+    <div class="comp-block">
+      <div class="comp-block-header"><span class="comp-block-label">Disabled</span></div>
+      <div class="comp-block-body">
+        <button class="btn-primary" disabled style="opacity:.5;cursor:not-allowed;">保存中...</button>
+        <button class="btn-draft" disabled style="opacity:.5;cursor:not-allowed;">保存中...</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑦ BADGE -->
+  <section class="section" id="badges">
+    <div class="section-title">Badge</div>
+    <div class="section-desc">日報の公開状態を表すバッジ。</div>
+    <div class="section-divider"></div>
+    <div class="comp-block">
+      <div class="comp-block-header"><span class="comp-block-label">Public · Private</span></div>
+      <div class="comp-block-body">
+        <span class="badge-pub">公開</span>
+        <span class="badge-prv">非公開</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑧ FORM -->
+  <section class="section" id="form">
+    <div class="section-title">Form</div>
+    <div class="section-desc">テキスト入力・エラーメッセージ。</div>
+    <div class="section-divider"></div>
+    <div class="comp-block">
+      <div class="comp-block-header"><span class="comp-block-label">Input · Error Message</span></div>
+      <div class="comp-block-body col">
+        <input class="input-field" type="text" placeholder="例：2026年7月18日の作業">
+        <div class="error-msg">この日付の日報はすでに存在します</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑨ CARD -->
+  <section class="section" id="card">
+    <div class="section-title">Card</div>
+    <div class="section-desc">日報一覧の1件分カード。</div>
+    <div class="section-divider"></div>
+    <div class="comp-block">
+      <div class="comp-block-header"><span class="comp-block-label">Report Card</span></div>
+      <div class="comp-block-body" style="background:#f1f5f9;">
+        <div class="report-card">
+          <div class="report-card-row">
+            <div class="report-card-left">
+              <span class="report-card-date">2026-07-18</span>
+              <span class="report-card-title">本日の作業まとめ</span>
+              <span class="badge-pub">公開</span>
+            </div>
+            <div class="report-card-actions">
+              <button class="btn-outline-blue">編集</button>
+              <button class="btn-outline-red">削除</button>
+            </div>
+          </div>
+          <div class="report-card-body">Spring Boot のリファクタリングを実施。NotificationScheduler からビジネスロジックを分離した。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑩ SIDEBAR -->
+  <section class="section" id="sidebar-comp">
+    <div class="section-title">Sidebar</div>
+    <div class="section-desc">デスクトップ固定のナビゲーションサイドバー。</div>
+    <div class="section-divider"></div>
+    <div class="comp-block">
+      <div class="comp-block-header"><span class="comp-block-label">Navigation</span></div>
+      <div class="comp-block-body">
+        <div class="sidebar-preview">
+          <div class="sp-logo">
+            <div class="sp-icon">✏️</div>
+            <div><div class="sp-name">DailyReport</div><div class="sp-sub">日報管理システム</div></div>
+          </div>
+          <div class="sp-nav">
+            <div class="sp-item active">📋 日報一覧</div>
+            <div class="sp-item">🌐 公開日報</div>
+            <div class="sp-item">⚙️ プロフィール設定</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function copyHex(el, val) {
+    navigator.clipboard.writeText(val).catch(() => {});
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1200);
+  }
+
+  // スクロール追従ナビ
+  const links = document.querySelectorAll('aside a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`aside a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('section[id]').forEach(s => obs.observe(s));
+
+  // フェードイン
+  const fadeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.section').forEach(s => fadeObs.observe(s));
+</script>
+</body>
+</html>
