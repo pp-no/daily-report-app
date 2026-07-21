@@ -3,6 +3,7 @@ package com.dailyreport.backend.api.exception;
 import com.dailyreport.backend.domain.exception.DuplicateReportException;
 import com.dailyreport.backend.domain.exception.ReportAccessDeniedException;
 import com.dailyreport.backend.domain.exception.ReportNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  * 【フロー】
  * Service が例外をスロー → コントローラーをスルー → ここでキャッチ → HTTPレスポンス生成
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -76,5 +78,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(e.getMessage()));
+    }
+
+    /**
+     * 上記いずれにも該当しない予期しない例外 → 500 Internal Server Error
+     * スタックトレースをサーバーログに記録し、内部情報をクライアントに返さない。
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGeneral(Exception e) {
+        log.error("Unexpected error occurred", e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse("予期しないエラーが発生しました"));
     }
 }
