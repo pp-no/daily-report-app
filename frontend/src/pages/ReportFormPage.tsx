@@ -28,6 +28,7 @@ const ReportFormPage = () => {
   const [saving, setSaving] = useState(false);
   const [draftSaving, setDraftSaving] = useState(false);
   const [showDraftConfirm, setShowDraftConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   /**
    * 編集時：既存の日報データをAPIから取得してフォームに反映
@@ -35,18 +36,22 @@ const ReportFormPage = () => {
    */
   useEffect(() => {
     if (!isEdit) return;
-    apiClient.get<DailyReport>(`/api/reports/${id}`).then((res) => {
-      const r = res.data;
-      setForm({
-        title: r.title,
-        todayTasks: r.todayTasks,
-        tomorrowTasks: r.tomorrowTasks,
-        impression: r.impression ?? '',
-        summary: r.summary ?? '',
-        reportDate: r.reportDate,
-        isPublic: r.isPublic,
-      });
-    });
+    setLoading(true);
+    apiClient.get<DailyReport>(`/api/reports/${id}`)
+      .then((res) => {
+        const r = res.data;
+        setForm({
+          title: r.title,
+          todayTasks: r.todayTasks,
+          tomorrowTasks: r.tomorrowTasks,
+          impression: r.impression ?? '',
+          summary: r.summary ?? '',
+          reportDate: r.reportDate,
+          isPublic: r.isPublic,
+        });
+      })
+      .catch(() => setError('日報データの取得に失敗しました'))
+      .finally(() => setLoading(false));
   }, [id, isEdit]);
 
   /**
@@ -106,6 +111,8 @@ const ReportFormPage = () => {
       setDraftSaving(false);
     }
   };
+
+  if (loading) return <Layout><div style={{ padding: 32, color: '#64748b', fontSize: 14 }}>読み込み中...</div></Layout>;
 
   // モバイル時は1カラム、デスクトップ時は2カラム
   const containerStyle: React.CSSProperties = {
