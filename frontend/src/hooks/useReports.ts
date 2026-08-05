@@ -70,7 +70,9 @@ export const useReports = () => {
    * 依存配列が空なので初回レンダリング時に1度だけ実行される
    */
   useEffect(() => {
-    fetchReports();
+    // fetchReports は async 関数のため setState は非同期に呼ばれる。同期的カスケードの問題はない。
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchReports();
   }, []);
 
   return { reports, loading, error, fetchReports, createReport, updateReport, deleteReport };

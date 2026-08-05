@@ -60,7 +60,7 @@ class DailyReportControllerTest {
     @WithMockUser(username = "test@example.com")
     void getMyReports_認証済みユーザー_200と日報一覧が返る() throws Exception {
         DailyReportResponse response = new DailyReportResponse(
-                1L, LocalDate.of(2026, 5, 30), "テスト日報",
+                1L, "test@example.com", LocalDate.of(2026, 5, 30), "テスト日報",
                 "今日やったこと", "明日やること", "所感", "まとめ",
                 false, null, null
         );
@@ -86,7 +86,7 @@ class DailyReportControllerTest {
     @Test
     void getPublicReports_認証なしでも_200と公開日報が返る() throws Exception {
         DailyReportResponse response = new DailyReportResponse(
-                2L, LocalDate.of(2026, 5, 29), "公開日報",
+                2L, "other@example.com", LocalDate.of(2026, 5, 29), "公開日報",
                 "公開タスク", "公開予定", null, null,
                 true, null, null
         );
@@ -106,7 +106,7 @@ class DailyReportControllerTest {
     @WithMockUser(username = "test@example.com")
     void createReport_正常系_201と作成された日報が返る() throws Exception {
         DailyReportResponse response = new DailyReportResponse(
-                1L, LocalDate.of(2026, 5, 30), "新規日報",
+                1L, "test@example.com", LocalDate.of(2026, 5, 30), "新規日報",
                 "今日やったこと", "明日やること", null, null,
                 false, null, null
         );
