@@ -36,9 +36,10 @@ const ReportFormPage = () => {
    */
   useEffect(() => {
     if (!isEdit) return;
-    setLoading(true);
-    apiClient.get<DailyReport>(`/api/reports/${id}`)
-      .then((res) => {
+    void (async () => {
+      setLoading(true);
+      try {
+        const res = await apiClient.get<DailyReport>(`/api/reports/${id}`);
         const r = res.data;
         setForm({
           title: r.title,
@@ -49,9 +50,12 @@ const ReportFormPage = () => {
           reportDate: r.reportDate,
           isPublic: r.isPublic,
         });
-      })
-      .catch(() => setError('日報データの取得に失敗しました'))
-      .finally(() => setLoading(false));
+      } catch {
+        setError('日報データの取得に失敗しました');
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [id, isEdit]);
 
   /**
