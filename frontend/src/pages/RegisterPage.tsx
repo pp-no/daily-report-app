@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import apiClient from '../api/client';
 import type { AuthResponse, RegisterRequest } from '../types/auth';
+import type { ApiErrorResponse } from '../types/api';
 
 /** ユーザー登録画面 */
 const RegisterPage = () => {
@@ -27,8 +29,18 @@ const RegisterPage = () => {
       const response = await apiClient.post<AuthResponse>('/api/auth/register', form);
       localStorage.setItem('token', response.data.token);
       navigate('/reports');
-    } catch {
-      setError('登録に失敗しました。メールアドレスが既に使用されている可能性があります');
+    } catch (err) {
+      if (axios.isAxiosError<ApiErrorResponse>(err)) {
+        if (err.response?.status === 409) {
+          setError('このメールアドレスは既に使用されています');
+        } else if (err.response?.data?.message) {
+          setError(err.response.data.message);
+        } else {
+          setError('登録に失敗しました。後でもう一度お試しください');
+        }
+      } else {
+        setError('ネットワークエラーが発生しました');
+      }
     } finally {
       setLoading(false);
     }

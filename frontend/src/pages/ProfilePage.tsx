@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Layout from '../components/Layout';
 import useIsMobile from '../hooks/useIsMobile';
 import apiClient from '../api/client';
+import type { ApiErrorResponse } from '../types/api';
 
 /** GET /api/users/me のレスポンス型 */
 type UserProfile = {
@@ -89,9 +91,10 @@ const ProfilePage = () => {
       setNewPassword('');
       setConfirmPassword('');
       setTimeout(() => setPasswordMessage(''), 3000);
-    } catch (err: unknown) {
-      const msg =
-        (err as { response?: { data?: { message?: string } } })?.response?.data?.message;
+    } catch (err) {
+      const msg = axios.isAxiosError<ApiErrorResponse>(err)
+        ? err.response?.data?.message
+        : undefined;
       setPasswordError(msg ?? 'パスワードの変更に失敗しました');
     }
   };
