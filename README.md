@@ -200,6 +200,113 @@ http://localhost:5173
 
 ---
 
+## IntelliJ でブレークポイントデバッグする
+
+フロントエンドとバックエンドを別々に起動し、IntelliJ のデバッガーでリアルタイムにステップ実行できる環境を構築する。
+
+### 構成イメージ
+
+```
+ブラウザ（localhost:5173）
+    ↓ APIリクエスト
+フロントエンド：npm run dev（ターミナル）
+    ↓ プロキシ経由
+バックエンド：IntelliJ デバッグ実行（localhost:8080）← ブレークポイントが効く
+    ↓
+PostgreSQL：Docker（localhost:5432）
+```
+
+### 注意：docker compose の起動方法
+
+`docker-compose.yml` には `db`・`backend`・`frontend` の3サービスが定義されている。
+`docker compose up -d`（サービス名なし）で起動すると **backend コンテナも8080で立ち上がり、IntelliJ のデバッグ実行と競合してポートエラーになる**。
+
+デバッグ時は **`db` だけを指定して起動**すること。
+
+```bash
+# ✅ デバッグ時はこれ（DBのみ）
+docker compose up -d db
+
+# ❌ これはNG（backendコンテナも起動して8080が競合する）
+docker compose up -d
+```
+
+すでに全サービスを起動してしまった場合は一度停止する：
+
+```bash
+docker compose down
+docker compose up -d db
+```
+
+### 手順
+
+#### 1. PostgreSQL を起動する（DBのみ）
+
+```bash
+docker compose up -d db
+```
+
+#### 2. IntelliJ でプロジェクトを開く
+
+`File`（ファイル）→ `Open`（開く）→ `daily-report-app/backend` を選択。
+
+#### 3. 実行構成を作成する
+
+1. 右上の `Add Configuration...`（実行構成の追加）をクリック
+2. `+` → `Spring Boot` を選択
+3. 以下を設定する
+
+| 項目 | 値 |
+|---|---|
+| Name（名前） | `BackendApplication`（任意）|
+| Main class（メインクラス） | `com.dailyreport.backend.BackendApplication` |
+| JDK | `temurin-21`（またはインストール済みの Java 21）|
+| Active profiles（有効なプロファイル） | （空白でOK）|
+
+4. `OK` で保存
+
+#### 4. デバッグ実行する
+
+虫アイコン（🐛）のボタン、または `Shift + F9` でデバッグ実行する。
+日本語UIの場合は「デバッグ」ボタンと表示されている。
+
+コンソールに以下が表示されれば起動成功：
+
+```
+Started BackendApplication in X.XXX seconds
+```
+
+#### 5. ブレークポイントを設定する
+
+止めたい行の行番号の左側をクリックすると赤丸（●）が付く。
+
+例：`DailyReportService.java` の `create()` メソッドの先頭行に設定すると、日報作成APIが呼ばれた瞬間に停止する。
+
+#### 6. フロントエンドを起動する
+
+別のターミナルで：
+
+```bash
+cd frontend
+npm run dev
+```
+
+#### 7. ブラウザで操作してブレークポイントを確認する
+
+`http://localhost:5173` を開き、ブレークポイントを張った処理を画面から実行する。IntelliJ のデバッガーペインで変数の中身やスタックトレースを確認できる。
+
+### デバッガーの主な操作
+
+| 操作（日本語UI） | ショートカット | 説明 |
+|---|---|---|
+| ステップオーバー（Step Over） | `F8` | 現在の行を実行して次へ（メソッドの中には入らない）|
+| ステップイン（Step Into） | `F7` | メソッドの中に入る |
+| ステップアウト（Step Out） | `Shift + F8` | 現在のメソッドを抜けて呼び出し元に戻る |
+| プログラムの再開（Resume Program） | `F9` | 次のブレークポイントまで実行を続ける |
+| 式の評価（Evaluate Expression） | `Alt + F8` | 任意の式をその場で評価して値を確認する |
+
+---
+
 ## 通知メールの仕組み
 
 ### 自動通知（スケジューラー）
