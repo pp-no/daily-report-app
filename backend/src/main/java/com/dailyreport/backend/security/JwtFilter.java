@@ -24,7 +24,7 @@ import java.io.IOException;
  * 【OncePerRequestFilter】1リクエストにつき1回だけ実行されることを保証するフィルターの基底クラス。
  *
  * 【フロー】
- * 1. AuthorizationヘッダーからJWTを取り出す
+ * 1. HttpOnly Cookie "token" から JWT を取り出す
  * 2. JWTの署名・有効期限を検証する
  * 3. JWTからメールアドレスを取り出してDBでユーザーを確認する
  * 4. 認証情報をSecurityContextに格納する（これ以降 @AuthenticationPrincipal で取れる）
@@ -41,18 +41,19 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        // "Authorization: Bearer <token>" の形式を想定。ヘッダーがなければ未認証としてスキップ。
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            chain.doFilter(request, response);
-            return;
+        // HttpOnly Cookie "token" から JWT を取り出す。Cookieがなければ未認証としてスキップ。
+        String token = null;
+        if (request.getCookies() != null) {
+            for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
+                if ("token".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
         }
 
-        // "Bearer " の7文字を除いてトークン本体だけ取り出す
-        String token = authHeader.substring(7);
-
         // トークンの署名検証・有効期限チェック。不正なら未認証としてスキップ。
-        if (!jwtUtil.isTokenValid(token)) {
+        if (token == null || !jwtUtil.isTokenValid(token)) {
             chain.doFilter(request, response);
             return;
         }

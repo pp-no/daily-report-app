@@ -1,12 +1,14 @@
 package com.dailyreport.backend.api.controller;
 
-import com.dailyreport.backend.api.dto.AuthResponse;
 import com.dailyreport.backend.api.dto.LoginRequest;
 import com.dailyreport.backend.api.dto.RegisterRequest;
 import com.dailyreport.backend.service.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,20 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 認証コントローラー
  *
- * 【役割】HTTPリクエストを受け取り、Service へつなぐだけの入出力窓口。
- * ビジネスロジック（入力検証以外）は持たない。
- *
- * 【@RestController】
- * @Controller + @ResponseBody の組み合わせ。
- * 戻り値のオブジェクトを自動でJSONに変換してレスポンスに書き込む。
- *
- * 【@RequestMapping("/api/auth")】
- * このクラス全体のURLプレフィックス。
- * 各メソッドのパスと組み合わさって最終的なURLになる（例: /api/auth/login）。
- *
- * 【@RequiredArgsConstructor】
- * final フィールドをすべて引数に取るコンストラクタを Lombok が自動生成。
- * Spring はそのコンストラクタを使ってDI（依存性の注入）を行う。
+ * 【HttpOnly Cookie 認証】
+ * JWTトークンをレスポンスボディではなく HttpOnly Cookie に格納する。
+ * HttpOnly Cookie は JavaScript から読み取れないため XSS 攻撃でトークンを盗まれない。
+ * SameSite=Strict により CSRF 攻撃も防御する。
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -38,29 +30,46 @@ public class AuthController {
 
     private final AuthService authService;
 
-    /**
-     * POST /api/auth/register（ユーザー登録）
-     *
-     * 【@RequestBody】リクエストボディのJSONをJavaオブジェクトに自動変換する。
-     * 【@Valid】RegisterRequest に定義されたバリデーションアノテーション（@NotBlank等）を実行する。
-     *   バリデーション失敗時は GlobalExceptionHandler が 400 Bad Request を返す。
-     *
-     * 【201 Created】リソース作成成功時のHTTPステータス。
-     *   200 ではなく 201 を返すのが REST の慣習。
-     */
+    /** POST /api/auth/register（ユーザー登録） */
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody @Valid RegisterRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
+    public ResponseEntity<Void> register(@RequestBody @Valid RegisterRequest request, HttpServletResponse response) {
+        String token = authService.register(request);
+        setTokenCookie(response, token);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    /**
-     * POST /api/auth/login（ログイン）
-     *
-     * 認証成功時は 200 OK と JWT トークンを返す。
-     * 認証失敗時は Spring Security が例外を投げて 401 を返すため、ここには到達しない。
-     */
+    /** POST /api/auth/login（ログイン） */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<Void> login(@RequestBody @Valid LoginRequest request, HttpServletResponse response) {
+        String token = authService.login(request);
+        setTokenCookie(response, token);
+        return ResponseEntity.ok().build();
+    }
+
+    /** POST /api/auth/logout（ログアウト）：Cookieを削除する */
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        clearTokenCookie(response);
+        return ResponseEntity.ok().build();
+    }
+
+    private void setTokenCookie(HttpServletResponse response, String token) {
+        ResponseCookie cookie = ResponseCookie.from("token", token)
+                .httpOnly(true)
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(7 * 24 * 60 * 60) // 7日間
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
+    private void clearTokenCookie(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("token", "")
+                .httpOnly(true)
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(0)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 }

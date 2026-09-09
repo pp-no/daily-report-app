@@ -43,9 +43,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 【CSRF無効化】JWT認証を使うため不要。
-                // CSRFはブラウザのCookieセッションを悪用した攻撃への対策だが、
-                // JWTはAuthorizationヘッダーで送るためCSRF攻撃を受けない。
+                // 【CSRF無効化】Cookie 認証だが SameSite=Strict で CSRF を防御するため無効化する。
+                // SameSite=Strict: 異なるオリジンからのリクエストにはCookieが送られないため
+                // 攻撃者サイトからの偽リクエストはCookieなしになり認証を通らない。
                 .csrf(AbstractHttpConfigurer::disable)
 
                 // 【CORS設定】フロントエンド（localhost:5173）からのリクエストを許可する。

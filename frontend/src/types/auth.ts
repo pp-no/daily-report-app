@@ -19,11 +19,3 @@ export interface RegisterRequest {
   workStartTime: string;
 }
 
-/**
- * ログイン・登録APIが返すレスポンスの型
- * AuthResponse.java の内容と対応している
- * tokenをlocalStorageに保存してその後のAPIリクエストに使う
- */
-export interface AuthResponse {
-  token: string;
-}
