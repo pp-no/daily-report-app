@@ -6,13 +6,15 @@ import ReportFormPage from './pages/ReportFormPage';
 import PublicReportsPage from './pages/PublicReportsPage';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
+import { AuthProvider } from './context/AuthContext';
 
 /**
  * アプリケーションのルーティング定義
- * PrivateRouteで認証が必要なページをラップする
+ * AuthProvider で認証状態をグローバル管理し、PrivateRoute で認証必須ページを保護する
  */
 function App() {
   return (
+    <AuthProvider>
     <BrowserRouter>
       <Routes>
         {/* 認証不要ページ */}
@@ -30,6 +32,7 @@ function App() {
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 

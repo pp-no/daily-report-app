@@ -1,6 +1,5 @@
 package com.dailyreport.backend.service;
 
-import com.dailyreport.backend.api.dto.AuthResponse;
 import com.dailyreport.backend.api.dto.LoginRequest;
 import com.dailyreport.backend.api.dto.RegisterRequest;
 import com.dailyreport.backend.domain.entity.User;
@@ -63,9 +62,9 @@ class AuthServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(new User());
         when(jwtUtil.generateToken("test@example.com")).thenReturn("mock.jwt.token");
 
-        AuthResponse result = authService.register(request);
+        String result = authService.register(request);
 
-        assertThat(result.token()).isEqualTo("mock.jwt.token");
+        assertThat(result).isEqualTo("mock.jwt.token");
         // パスワードがエンコードされてから保存されることを確認
         verify(passwordEncoder, times(1)).encode("password123");
         verify(userRepository, times(1)).save(any(User.class));
@@ -98,9 +97,9 @@ class AuthServiceTest {
         LoginRequest request = new LoginRequest("test@example.com", "password123");
         when(jwtUtil.generateToken("test@example.com")).thenReturn("mock.jwt.token");
 
-        AuthResponse result = authService.login(request);
+        String result = authService.login(request);
 
-        assertThat(result.token()).isEqualTo("mock.jwt.token");
+        assertThat(result).isEqualTo("mock.jwt.token");
         // AuthenticationManager.authenticate() が呼ばれたことを確認
         verify(authenticationManager, times(1))
                 .authenticate(any(UsernamePasswordAuthenticationToken.class));

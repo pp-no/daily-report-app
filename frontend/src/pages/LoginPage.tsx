@@ -1,26 +1,28 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import apiClient from '../api/client';
-import type { AuthResponse, LoginRequest } from '../types/auth';
+import { useAuth } from '../context/AuthContext';
+import type { LoginRequest } from '../types/auth';
 
 /** ログイン画面 */
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { setAuthenticated } = useAuth();
   const [form, setForm] = useState<LoginRequest>({ email: '', password: '' });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   /**
    * ログインフォーム送信
-   * 成功時はJWTトークンをlocalStorageに保存して日報一覧へ遷移
+   * 成功時はサーバーが HttpOnly Cookie をセットし、認証状態を更新して日報一覧へ遷移
    */
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
     try {
-      const response = await apiClient.post<AuthResponse>('/api/auth/login', form);
-      localStorage.setItem('token', response.data.token);
+      await apiClient.post('/api/auth/login', form);
+      setAuthenticated();
       navigate('/reports');
     } catch {
       setError('メールアドレスまたはパスワードが正しくありません');

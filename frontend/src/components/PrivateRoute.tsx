@@ -1,27 +1,20 @@
 import { Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 type Props = {
   children: React.ReactNode;
 };
 
 /**
- * 認証が必要なページを保護するラッパーコンポーネント
- * localStorageにJWTトークンがなければ /login へリダイレクトする
- * App.tsx で認証必須ルートをこのコンポーネントで囲って使う
- *
- * @param children 認証済みのときだけ表示するページコンポーネント
+ * 認証が必要なページを保護するラッパーコンポーネント。
+ * AuthContext の認証状態を見てアクセス可否を判定する。
+ * loading 中は何も描画しない（アプリ初期化時の一瞬だけ）。
  */
 const PrivateRoute = ({ children }: Props) => {
-  // ログイン時に apiClient 経由で受け取ったトークンが保存されている
-  const token = localStorage.getItem('token');
+  const { authState } = useAuth();
 
-  // トークンがなければ未ログインとみなしてログインページへ追い返す
-  // replace: true にすることでブラウザの戻るボタンで戻れなくする
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // トークンがあれば子コンポーネント（実際のページ）をそのまま表示する
+  if (authState === 'loading') return null;
+  if (authState === 'unauthenticated') return <Navigate to="/login" replace />;
   return <>{children}</>;
 };
 

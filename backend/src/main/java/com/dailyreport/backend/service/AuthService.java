@@ -1,6 +1,5 @@
 package com.dailyreport.backend.service;
 
-import com.dailyreport.backend.api.dto.AuthResponse;
 import com.dailyreport.backend.api.dto.LoginRequest;
 import com.dailyreport.backend.api.dto.RegisterRequest;
 import com.dailyreport.backend.domain.entity.User;
@@ -31,7 +30,7 @@ public class AuthService {
      * ユーザー登録処理。
      * メールアドレスの重複チェック → パスワードハッシュ化 → DB保存 → JWT発行 の順に実行する。
      */
-    public AuthResponse register(RegisterRequest request) {
+    public String register(RegisterRequest request) {
         // 同じメールアドレスが既に存在する場合は登録拒否
         if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new IllegalArgumentException("このメールアドレスは既に使用されています");
@@ -47,7 +46,7 @@ public class AuthService {
         }
         userRepository.save(user);
         // 登録後すぐにログイン状態にするためJWTを発行して返す
-        return new AuthResponse(jwtUtil.generateToken(user.getEmail()));
+        return jwtUtil.generateToken(user.getEmail());
     }
 
     /**
@@ -59,10 +58,10 @@ public class AuthService {
      * 認証失敗時は BadCredentialsException がスローされ、GlobalExceptionHandler が 401 を返す。
      * 認証成功時は例外なく通過するため、そのまま JWT を生成して返す。
      */
-    public AuthResponse login(LoginRequest request) {
+    public String login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
-        return new AuthResponse(jwtUtil.generateToken(request.email()));
+        return jwtUtil.generateToken(request.email());
     }
 }

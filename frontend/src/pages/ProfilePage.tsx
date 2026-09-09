@@ -4,6 +4,7 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import useIsMobile from '../hooks/useIsMobile';
 import apiClient from '../api/client';
+import { useAuth } from '../context/AuthContext';
 import type { ApiErrorResponse } from '../types/api';
 
 /** GET /api/users/me のレスポンス型 */
@@ -18,6 +19,7 @@ type UserProfile = {
 const ProfilePage = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const { setUnauthenticated } = useAuth();
 
   // プロフィール情報フォームの状態
   const [name, setName] = useState('');
@@ -130,9 +132,10 @@ const ProfilePage = () => {
     }
   };
 
-  // ログアウト：トークンを削除して /login へ遷移
-  const handleLogout = () => {
-    localStorage.removeItem('token');
+  // ログアウト：サーバーでCookieを削除して /login へ遷移
+  const handleLogout = async () => {
+    await apiClient.post('/api/auth/logout');
+    setUnauthenticated();
     navigate('/login', { replace: true });
   };
 

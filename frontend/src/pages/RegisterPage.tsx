@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import apiClient from '../api/client';
-import type { AuthResponse, RegisterRequest } from '../types/auth';
+import { useAuth } from '../context/AuthContext';
+import type { RegisterRequest } from '../types/auth';
 import type { ApiErrorResponse } from '../types/api';
 
 /** ユーザー登録画面 */
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const { setAuthenticated } = useAuth();
   const [form, setForm] = useState<RegisterRequest>({
     name: '',
     email: '',
@@ -19,15 +21,15 @@ const RegisterPage = () => {
 
   /**
    * 登録フォーム送信
-   * 成功時はJWTトークンをlocalStorageに保存して日報一覧へ遷移
+   * 成功時はサーバーが HttpOnly Cookie をセットし、認証状態を更新して日報一覧へ遷移
    */
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
     try {
-      const response = await apiClient.post<AuthResponse>('/api/auth/register', form);
-      localStorage.setItem('token', response.data.token);
+      await apiClient.post('/api/auth/register', form);
+      setAuthenticated();
       navigate('/reports');
     } catch (err) {
       if (axios.isAxiosError<ApiErrorResponse>(err)) {

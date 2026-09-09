@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import apiClient from '../api/client';
+import { useAuth } from '../context/AuthContext';
 
 /** サイドバーのナビゲーション項目の型 */
 interface NavItem {
@@ -35,6 +36,7 @@ const NAV_ITEMS: NavItem[] = [
 const Sidebar = ({ isMobile = false, isOpen = false, onClose }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { setUnauthenticated } = useAuth();
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -43,9 +45,10 @@ const Sidebar = ({ isMobile = false, isOpen = false, onClose }: SidebarProps) =>
     });
   }, []);
 
-  /** ログアウト処理：トークンを削除してログインページへ遷移 */
-  const handleLogout = () => {
-    localStorage.removeItem('token');
+  /** ログアウト処理：サーバーでCookieを削除してログインページへ遷移 */
+  const handleLogout = async () => {
+    await apiClient.post('/api/auth/logout');
+    setUnauthenticated();
     navigate('/login');
   };
 
