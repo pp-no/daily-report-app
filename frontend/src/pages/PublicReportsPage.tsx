@@ -4,19 +4,48 @@ import type { DailyReport } from '../types/report';
 import Layout from '../components/Layout';
 import useIsMobile from '../hooks/useIsMobile';
 
+/** Spring Page レスポンス型 */
+interface PageResponse<T> {
+  content: T[];
+  last: boolean;
+  totalElements: number;
+}
+
+const PAGE_SIZE = 12;
+
 /** 公開日報一覧画面 */
 const PublicReportsPage = () => {
   const [reports, setReports] = useState<DailyReport[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [isLast, setIsLast] = useState(false);
+  const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<DailyReport | null>(null);
   const isMobile = useIsMobile();
 
   useEffect(() => {
     apiClient
-      .get<DailyReport[]>('/api/reports/public')
-      .then((res) => setReports(res.data))
+      .get<PageResponse<DailyReport>>(`/api/reports/public?page=0&size=${PAGE_SIZE}`)
+      .then((res) => {
+        setReports(res.data.content);
+        setIsLast(res.data.last);
+        setPage(0);
+      })
       .finally(() => setLoading(false));
   }, []);
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setLoadingMore(true);
+    apiClient
+      .get<PageResponse<DailyReport>>(`/api/reports/public?page=${nextPage}&size=${PAGE_SIZE}`)
+      .then((res) => {
+        setReports((prev) => [...prev, ...res.data.content]);
+        setIsLast(res.data.last);
+        setPage(nextPage);
+      })
+      .finally(() => setLoadingMore(false));
+  };
 
   const gridStyle: React.CSSProperties = {
     display: 'grid',
@@ -48,6 +77,14 @@ const PublicReportsPage = () => {
             <PublicReportCard key={report.id} report={report} onDetail={() => setSelected(report)} />
           ))}
         </div>
+
+        {!loading && !isLast && (
+          <div style={S.loadMoreArea}>
+            <button style={S.loadMoreButton} onClick={handleLoadMore} disabled={loadingMore}>
+              {loadingMore ? '読み込み中...' : 'もっと見る'}
+            </button>
+          </div>
+        )}
       </div>
 
       {selected && <DetailModal report={selected} onClose={() => setSelected(null)} />}
@@ -210,6 +247,21 @@ const S = {
     lineHeight: 1.7,
     whiteSpace: 'pre-wrap' as const,
     margin: 0,
+  },
+  loadMoreArea: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 32,
+  },
+  loadMoreButton: {
+    background: 'transparent',
+    color: '#3b82f6',
+    border: '1px solid #3b82f6',
+    borderRadius: 8,
+    padding: '10px 32px',
+    fontSize: 14,
+    fontWeight: 600,
+    cursor: 'pointer',
   },
 };
 
