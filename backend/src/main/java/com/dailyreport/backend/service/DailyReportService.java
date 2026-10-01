@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import java.util.List;
 
 /**
@@ -90,11 +93,11 @@ public class DailyReportService {
         reportRepository.delete(report);
     }
 
-    /** 全ユーザーの公開日報を返す。誰の日報かは問わない。 */
+    /** 全ユーザーの公開日報をページ単位で返す。JOIN FETCH でN+1を解消。 */
     @Transactional(readOnly = true)
-    public List<DailyReportResponse> getPublicReports() {
-        return reportRepository.findByIsPublicTrueOrderByReportDateDesc()
-                .stream().map(DailyReportResponse::from).toList();
+    public Page<DailyReportResponse> getPublicReports(int page, int size) {
+        return reportRepository.findPublicReportsWithUser(PageRequest.of(page, size))
+                .map(DailyReportResponse::from);
     }
 
     // ---- private ヘルパーメソッド ----

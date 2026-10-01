@@ -16,6 +16,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -90,12 +93,13 @@ class DailyReportControllerTest {
                 "公開タスク", "公開予定", null, null,
                 true, null, null
         );
-        when(dailyReportService.getPublicReports()).thenReturn(List.of(response));
+        when(dailyReportService.getPublicReports(0, 12))
+                .thenReturn(new PageImpl<>(List.of(response), PageRequest.of(0, 12), 1));
 
         // SecurityConfig で /api/reports/public は permitAll() なので認証なしで OK
         mockMvc.perform(get("/api/reports/public"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("公開日報"));
+                .andExpect(jsonPath("$.content[0].title").value("公開日報"));
     }
 
     // =========================================================

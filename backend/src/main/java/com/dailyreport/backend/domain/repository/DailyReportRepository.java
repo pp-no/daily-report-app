@@ -1,6 +1,8 @@
 package com.dailyreport.backend.domain.repository;
 
 import com.dailyreport.backend.domain.entity.DailyReport;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,6 +39,14 @@ public interface DailyReportRepository extends JpaRepository<DailyReport, Long> 
 
     /** 公開フラグが true の日報を全ユーザー分取得。 */
     List<DailyReport> findByIsPublicTrueOrderByReportDateDesc();
+
+    /**
+     * 公開日報をページ単位で取得。JOIN FETCH でユーザー情報を1クエリで取得しN+1を防ぐ。
+     * countQuery を別定義することで Pageable との組み合わせ時のメモリ上ページネーションを回避する。
+     */
+    @Query(value = "SELECT r FROM DailyReport r JOIN FETCH r.user WHERE r.isPublic = true ORDER BY r.reportDate DESC",
+           countQuery = "SELECT COUNT(r) FROM DailyReport r WHERE r.isPublic = true")
+    Page<DailyReport> findPublicReportsWithUser(Pageable pageable);
 
     /**
      * 【@Query】命名規則では表現しにくい複雑な条件のSQLをJPQL（Java用のSQL的なもの）で書く。

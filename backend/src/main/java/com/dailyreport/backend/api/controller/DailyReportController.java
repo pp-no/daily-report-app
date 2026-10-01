@@ -11,6 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 /**
@@ -42,12 +44,14 @@ public class DailyReportController {
 
     /**
      * GET /api/reports/public（公開日報一覧取得）
-     * 全ユーザーの公開日報を返す。@AuthenticationPrincipal 不要（誰の日報か問わない）。
-     * SecurityConfig で permitAll にせず認証は必要としている（ログインユーザーのみ閲覧可）。
+     * ページネーション対応。page=0&size=12 形式でリクエストする。
+     * JOIN FETCH により N+1 クエリを解消している。
      */
     @GetMapping("/public")
-    public ResponseEntity<List<DailyReportResponse>> getPublicReports() {
-        return ResponseEntity.ok(dailyReportService.getPublicReports());
+    public ResponseEntity<Page<DailyReportResponse>> getPublicReports(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size) {
+        return ResponseEntity.ok(dailyReportService.getPublicReports(page, size));
     }
 
     /**
